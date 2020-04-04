@@ -18,36 +18,27 @@ const wallsAndGates = rooms => {
   for (let i = 0; i < m; i++) {
     for (let j = 0; j < m; j++) {
       if (rooms[i][j] === GATE) {
-        dfs(i, j, new Set(), 0);
+        dfs(i, j, 0);
       }
     }
   }
 
   return rooms;
 
-  function dfs(i, j, seen, steps) {
-    if (seen.has(getKey(i, j)) || rooms[i][j] === WALL) {
+  function dfs(i, j, steps) {
+    if (
+      i < 0 || i >= m ||
+      j < 0 || j >= n ||
+      rooms[i][j] === WALL ||
+      rooms[i][j] < steps
+    ) {
       return;
     }
 
-    seen.add(getKey(i, j));
-    rooms[i][j] = Math.min(rooms[i][j], steps);
+    rooms[i][j] = steps;
 
     DIRECTIONS.forEach(direction => {
-      const nextI = i + direction[0];
-      const nextJ = j + direction[1];
-
-      if (
-        nextI < 0 || nextI >= m ||
-        nextJ < 0 || nextJ >= n ||
-        rooms[nextI][nextJ] === WALL ||
-        seen.has(getKey(nextI, nextJ)) ||
-        rooms[nextI][nextJ] <= (steps + 1)
-      ) {
-        return;
-      }
-
-      dfs(nextI, nextJ, seen, steps + 1);
+      dfs(i + direction[0], j + direction[1], steps + 1);
     });
   }
 };
