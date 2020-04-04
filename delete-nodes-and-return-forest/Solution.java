@@ -20,8 +20,8 @@ class Solution {
       delete.add(i);
     }
 
-    helper(root);
-    if (!delete.contains(root.val)) {
+    root = helper(root);
+    if (root != null) {
       answer.add(root);
     }
 
