@@ -1,16 +1,15 @@
 class Solution {
   public int shortestWay(String source, String target) {
     int numSubsequences = 0;
-    String remaining = target;
 
-    while (remaining.length() > 0) {
+    while (target.length() > 0) {
       int i = 0;
       int j = 0;
       StringBuilder subsequence = new StringBuilder();
 
-      while (i < source.length() && j < remaining.length()) {
-        if (remaining.charAt(j) == source.charAt(i++)) {
-          subsequence.append(remaining.charAt(j++));
+      while (i < source.length() && j < target.length()) {
+        if (target.charAt(j) == source.charAt(i++)) {
+          subsequence.append(target.charAt(j++));
         }
       }
 
@@ -18,7 +17,7 @@ class Solution {
         return -1;
       }
 
-      remaining = remaining.substring(subsequence.length());
+      target = target.substring(subsequence.length());
       numSubsequences++;
     }
 
