@@ -17,28 +17,32 @@ var findWords = function (board, words) {
   if (!board || !board.length) {
     return [];
   }
-  
+
   const wordsSet = new Set(words);
   const charToNodeHash = {};
   const M = board.length;
   const N = board[0].length;
+  const trieNodes = []; //2d array but same as a hash
 
-  trieNodes = Array(M).fill().map(i => Array(N).fill());
-
+  //O(M * N)
+  //create a TrieNode for every char in the word search
   for (let i = 0; i < M; i++) {
+    if (!trieNodes[i]) {
+      trieNodes[i] = [];
+    }
+
     for (let j = 0; j < N; j++) {
       const char = board[i][j];
       const trieNode = new TrieNode(char, {});
-      trieNodes[i][j] = trieNode;
+      trieNodes[i].push(trieNode);
 
       charToNodeHash[char] = charToNodeHash[char] || [];
       charToNodeHash[char].push(trieNode);
     }
   }
 
-  //now we have every char in the word search as it's own node
-  //we can traverse the matrix and start building the trie
-
+  //we can traverse the weard search and build the trie node edges
+  //O(N * M)
   for (let i = 0; i < M; i++) {
     for (let j = 0; j < N; j++) {
       const node = trieNodes[i][j];
@@ -62,17 +66,17 @@ var findWords = function (board, words) {
   }
 
   //ok now the trie is built.  we can DFS for each word and try and see if the trie supports it
+  //this will be inefficient if some words are prefixes of other words
+  //O(w) where w is the number of words
   return words.filter(word => {
-    //find trie nodes with the first character in word
-    let startingTrieNodes = charToNodeHash[word[0]];
-    if (!startingTrieNodes) {
-      return false;
-    }
+    //find trie nodes matching the first character in searched for word
+    let startingTrieNodes = charToNodeHash[word[0]] || [];
 
-    //this has n children.  check next char for them
     for (let startIndex = 0; startIndex < startingTrieNodes.length; startIndex++) {
       let startNode = startingTrieNodes[startIndex];
-      if (dfsTrie(startNode, word, 1, {})) {
+
+      //O(log(w))
+      if (dfsTrie(startNode, word, 0, new Set())) {
         return true;
       }
     }
@@ -80,37 +84,26 @@ var findWords = function (board, words) {
     return false;
   });
 
-  //i think i need to recursively go through the trie and keep track of where i've been
-
-  function dfsTrie(node, word, wordIndex, seen) {
+  //traverse the trie with DFS and remember where you've been
+  function dfsTrie(node, word, numCharsSeen, seen) {
+    numCharsSeen++;
     //if we've seen this node before we're in a cycle.  return false.
-    if (seen[node.id]) {
+    if (seen.has(node.id)) {
       return false;
     }
 
-    if (!node) {
-      return false; //this should never happen
-    }
-
-    if (wordIndex > word.length) {
-      return false; //this should never happen
-    }
-
-    if (wordIndex === word.length) {
+    if (numCharsSeen === word.length) {
       return true;
     }
 
-    seen[node.id] = true;
-    const nextChar = word[wordIndex++];
-
-    const nextChildren = node.children[nextChar];
-
-    if (!nextChildren) {
-      return false;
-    }
+    seen.add(node.id);
+    
+    //look for the next character by traversing the trie
+    const nextChar = word[numCharsSeen];
+    const nextChildren = node.children[nextChar] || [];
 
     for (let i = 0; i < nextChildren.length; i++) {
-      if (dfsTrie(nextChildren[i], word, wordIndex, seen)) {
+      if (dfsTrie(nextChildren[i], word, numCharsSeen, seen)) {
         return true;
       }
     }
@@ -119,21 +112,21 @@ var findWords = function (board, words) {
   }
 };
 
-const board = [
-  ['o', 'a', 'a', 'n'],
-  ['e', 't', 'a', 'e'],
-  ['i', 'h', 'k', 'r'],
-  ['i', 'f', 'l', 'v']
-];
+// const board1 = [
+//   ['o', 'a', 'a', 'n'],
+//   ['e', 't', 'a', 'e'],
+//   ['i', 'h', 'k', 'r'],
+//   ['i', 'f', 'l', 'v']
+// ];
 
-const words = ['oath', 'pea', 'eat', 'rain'];
-console.log(findWords(board, words)); //['eat','oath']
-const board2 = [
-  ['a', 'b'],
-  ['c', 'd']
-];
-const words2 = ['acdb'];
-console.log(findWords(board2, words2)); //[]
+// const words1 = ['oath', 'pea', 'eat', 'rain'];
+// console.log(findWords(board1, words1)); //['eat','oath']
+// const board2 = [
+//   ['a', 'b'],
+//   ['c', 'd']
+// ];
+// const words2 = ['acdb'];
+// console.log(findWords(board2, words2)); //[]
 
 const board3 = [
   ["b", "a", "a", "b", "a", "b"],
