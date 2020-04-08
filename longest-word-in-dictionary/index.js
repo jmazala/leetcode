@@ -1,3 +1,4 @@
+//USING A TRIE
 function TrieNode(children, isWord) {
   this.children = children;
   this.isWord = isWord;
@@ -59,6 +60,32 @@ var longestWord = function (words) {
     });
   }
 };
+
+//USING A SET
+// const longestWord = function (words) {
+//   let longestWord = '';
+//   if (!words || words.length === 0) {
+//     return false;
+//   }
+  
+//   const hash = {'': true};
+//   words.forEach(word => hash[word] = true);
+//   words.sort();
+//   words.forEach(word => {
+//     for (let i = 0; i < words.length; i++) {
+//       //this is expensive bc we keep copying the string
+//       if (!hash[word.slice(0, i)]) {
+//         return;
+//       }
+//     }
+
+//     if (word.length > longestWord.length) {
+//       longestWord = word;
+//     }
+//   });
+
+//   return longestWord;
+// };
 
 console.log(longestWord(["w", "wo", "wor", "worl", "world", "worlm", "worlz"])); //world
 console.log(longestWord(["a", "banana", "app", "appl", "ap", "applk", "apply", "apple"])); //apply
