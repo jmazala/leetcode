@@ -14,7 +14,7 @@ var canCross = function (stones) {
   //don't need it for the last stone.
   const hash = {};
   stones.forEach(stone => {
-    hash[stone] = [];
+    hash[stone] = new Set();
   });
 
   //from stone 0 we can only move up 1
@@ -22,9 +22,10 @@ var canCross = function (stones) {
 
   for (let i = 0; i < stones.length - 1; i++) {
     const current = stones[i];
+    const stepsArray = Array.from(hash[current]);
 
-    for (let j = 0; j < hash[current].length; j++) {
-      const steps = hash[current][j];
+    for (let j = 0; j < stepsArray.length; j++) {
+      const steps = stepsArray[j];
       const next = current + steps;
 
       if (hash[next] === undefined || steps < 1) {
@@ -35,14 +36,11 @@ var canCross = function (stones) {
         return true;
       }
 
-      hash[next].push(steps - 1);
-      hash[next].push(steps);
-      hash[next].push(steps + 1);
+      hash[next].add(steps - 1);
+      hash[next].add(steps);
+      hash[next].add(steps + 1);
     }
   }
 
   return false;
 }
-
-console.log(canCross([0, 1, 3, 5, 6, 8, 12, 17])); // true
-console.log(canCross([0, 1, 2, 3, 4, 8, 9, 11])); // false
