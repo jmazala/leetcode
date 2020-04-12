@@ -19,7 +19,6 @@ class Solution:
 if __name__ == '__main__':
   s = Solution()
   print(s.backspaceCompare("ab##", "c#d#"))
-  print(s.backspaceCompare("ab##", "c#d#"))
   print(s.backspaceCompare("a##c", "#a#c"))
   print(s.backspaceCompare("a#c", "b"))
         
