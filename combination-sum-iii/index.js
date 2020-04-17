@@ -41,10 +41,6 @@ var combinationSum3 = function (k, n) {
       return;
     }
 
-    if (currentSum > n) {
-      return;
-    }
-
     if (k === 0) {
       if (currentSum === n) {
         answer.push(used);
@@ -54,6 +50,10 @@ var combinationSum3 = function (k, n) {
     }
 
     for (let j = i; j < array.length; j++) {
+      if ((currentSum + array[j]) > n) {
+        return;
+      }
+      
       recur(array, used.concat(array[j]), j + 1, currentSum + array[j], k - 1);
     }
   }
@@ -144,6 +144,6 @@ var combinationSum3 = function (k, n) {
 //   }
 // };
 
-// console.log(combinationSum3(3, 7)); // [[1,2,4]]
-// console.log(combinationSum3(3, 9)); // [[1,2,6], [1,3,5], [2,3,4]]
+console.log(combinationSum3(3, 7)); // [[1,2,4]]
+console.log(combinationSum3(3, 9)); // [[1,2,6], [1,3,5], [2,3,4]]
 console.log(combinationSum3(6, 35)); // [[1,4,6,7,8,9],[2,3,6,7,8,9],[2,4,5,7,8,9],[3,4,5,6,8,9]]
