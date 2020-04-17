@@ -39,7 +39,7 @@ var combinationSum3 = function (k, n) {
   function combinations(used, i, currentSum, k) {
     if (k === 0) {
       if (currentSum === n) {
-        answer.push(used);
+        answer.push(used.slice());
       }
 
       return;
@@ -58,7 +58,9 @@ var combinationSum3 = function (k, n) {
         return;
       }
 
-      combinations(used.concat(digitsArray[j]), j + 1, currentSum + digitsArray[j], k - 1);
+      used.push(digitsArray[j]);
+      combinations(used, j + 1, currentSum + digitsArray[j], k - 1);
+      used.pop();
     }
   }
 
