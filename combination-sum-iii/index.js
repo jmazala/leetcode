@@ -22,25 +22,21 @@ const _ = require('lodash');
 */
 //USING ALL COMBINATIONS, WITH A LITTLE SMARTS
 var combinationSum3 = function (k, n) {
+  //this is for leetcode and i have no clue at all why this is a case.
   if (k === 1) {
     return [[n]];
   }
+
   const maxHash = {};
   const minHash = {};
 
   const answer = [];
-  recur(_.range(1, Math.min(10, n + 1)), [], 0, 0, k);
+  //we don't need every digit if n is less than 9
+  const digitsArray = _.range(1, Math.min(10, n + 1));
+  combinations([], 0, 0, k);
   return answer;
 
-  function recur(array, used, i, currentSum, k) {
-    if (currentSum + maxWithNumDigitsLeft(k) < n) {
-      return;
-    }
-
-    if (currentSum + minWithNumDigitsLeft(k) > n) {
-      return;
-    }
-
+  function combinations(used, i, currentSum, k) {
     if (k === 0) {
       if (currentSum === n) {
         answer.push(used);
@@ -49,12 +45,20 @@ var combinationSum3 = function (k, n) {
       return;
     }
 
-    for (let j = i; j < array.length; j++) {
-      if ((currentSum + array[j]) > n) {
+    for (let j = i; j < digitsArray.length; j++) {
+      //return if we can't reach n even with all remaining digits
+      //this could be further optimized passing in starting index j
+      if (currentSum + maxWithNumDigitsLeft(k) < n) {
         return;
       }
-      
-      recur(array, used.concat(array[j]), j + 1, currentSum + array[j], k - 1);
+
+      //return if we'll exceed n even with minimum digits left
+      //this could be further optimized passing in starting index j
+      if (currentSum + minWithNumDigitsLeft(k) > n) {
+        return;
+      }
+
+      combinations(used.concat(digitsArray[j]), j + 1, currentSum + digitsArray[j], k - 1);
     }
   }
 
@@ -65,7 +69,7 @@ var combinationSum3 = function (k, n) {
 
     let max = 0;
     for (let i = 0; i < num; i++) {
-      max += (9 - i);
+      max += (digitsArray[digitsArray.length - 1] - i);
     }
 
     maxHash[num] = max;
