@@ -26,8 +26,9 @@ var averageOfLevels = function (root) {
     }
 
     valuesPerLevel[level] = valuesPerLevel[level] || [];
-    valesPerLevel[level].push(node.val);
+    valuesPerLevel[level].push(node.val);
     dfs(node.left, level + 1);
     dfs(node.right, level + 1);
   }
 };
+
