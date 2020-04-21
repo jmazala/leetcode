@@ -24,7 +24,7 @@ class Solution {
     }
 
     if (!map.containsKey(horizontalLevel)) {
-      map.put(horizontalLevel, new ArrayList<>());
+      map.put(horizontalLevel, new LinkedList<>());
     }
 
     map.get(horizontalLevel).add(node.val);
