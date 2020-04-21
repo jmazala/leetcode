@@ -3,7 +3,6 @@ const { TreeNode } = require('../js-includes');
 const verticalTraversal = function (root) {
   //dfs the tree keeping track of where it's at horizontally
   const hash = {};
-  const visited = new Set();
   let minLevel = Infinity;
   let maxLevel = -Infinity;
 
@@ -22,55 +21,14 @@ const verticalTraversal = function (root) {
 
     minLevel = Math.min(minLevel, horizontalLevel);
     maxLevel = Math.max(maxLevel, horizontalLevel);
-    
-    if (!visited.has(node.val)) {
-      visited.add(node.val);
-      hash[horizontalLevel] = hash[horizontalLevel] || [];
-      hash[horizontalLevel].push(node.val);
-    }
+
+    hash[horizontalLevel] = hash[horizontalLevel] || [];
+    hash[horizontalLevel].push(node.val);
 
     dfs(node.left, horizontalLevel - 1);
     dfs(node.right, horizontalLevel + 1);
   }
 };
-
-/**
- * @param {TreeNode} root
- * @return {number[][]}
- */
-// var verticalTraversal = function (root) {
-//   const nodes = {};
-
-//   //recursively go through the tree and populate a map remembering min and max coordinates
-//   dfs(root, 0, 0);
-//   //map it to a 2d array and return it
-//   answer = []
-
-//   Object.keys(nodes).sort((a, b) => a - b).forEach(x => {
-//     let subAnswer = [];
-
-//     Object.keys(nodes[x]).sort((a, b) => a - b).forEach(y => {
-//       subAnswer = subAnswer.concat(nodes[x][y].map(node => node.val).sort((a, b) => a - b));
-//     });
-
-//     answer.push(subAnswer);
-//   });
-
-//   return answer;
-
-//   function dfs(node, x, y) {
-//     if (!node) {
-//       return;
-//     }
-
-//     nodes[x] = nodes[x] || {};
-//     nodes[x][y] = nodes[x][y] || [];
-//     nodes[x][y].push(node);
-
-//     dfs(node.left, x - 1, y + 1);
-//     dfs(node.right, x + 1, y + 1);
-//   }
-// };
 
 const root = new TreeNode(3);
 root.left = new TreeNode(9);

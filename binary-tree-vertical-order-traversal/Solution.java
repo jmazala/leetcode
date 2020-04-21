@@ -3,11 +3,9 @@ import java.util.*;
 class Solution {
   List<List<Integer>> answer;
   Map<Integer, List<Integer>> map;
-  Set<TreeNode> visited;
 
   public List<List<Integer>> verticalTraversal(TreeNode root) {
     map = new TreeMap<>();
-    visited = new HashSet<>();
 
     dfs(root, 0);
     answer = new LinkedList<>();
@@ -25,14 +23,11 @@ class Solution {
       return;
     }
 
-    if (!visited.contains(node)) {
-      visited.add(node);
-      if (!map.containsKey(horizontalLevel)) {
-        map.put(horizontalLevel, new ArrayList<>());
-      }
-
-      map.get(horizontalLevel).add(node.val);
+    if (!map.containsKey(horizontalLevel)) {
+      map.put(horizontalLevel, new ArrayList<>());
     }
+
+    map.get(horizontalLevel).add(node.val);
 
     dfs(node.left, horizontalLevel - 1);
     dfs(node.right, horizontalLevel + 1);
