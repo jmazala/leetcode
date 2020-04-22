@@ -4,36 +4,26 @@
  */
 var longestConsecutive = function (array) {
   if (!array.length) {
-    return [];
+    return 0;
   }
 
   const set = new Set(array);
-  array = Array.from(set).sort((a, b) => a - b);
-  let min = array[0];
-  const max = array[array.length - 1];
+  let answer = 0;
 
-  let answer = [min, min];
-  let i = array.shift();
-  while (array.length) {
-    if (set.has(i) && set.has(i + 1)) {
-      i++;
-      array.shift();
-      continue;
+  set.forEach(num => {
+    if (!set.has(num - 1)) { // on a new streak
+      let streak = 1;
+
+      while (set.has(num + 1)) {
+        num++;
+        streak++;
+      }
+
+      answer = Math.max(answer, streak);
     }
+  });
 
-    if ((i - min) > (answer[1] - answer[0])) {
-      answer = [min, i];
-    }
-
-    i = array.shift();
-    min = i;
-  }
-
-  if ((i - min) > (answer[1] - answer[0])) {
-    answer = [min, i];
-  }
-
-  return answer[1] - answer[0] + 1;
+  return answer;
 }
 
 console.log(longestConsecutive([1, 11, 3, 0, 15, 5, 2, 4, 10, 7, 12, 6])); // 8
