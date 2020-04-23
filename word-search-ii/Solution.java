@@ -2,7 +2,6 @@ import java.util.*;
 
 class Solution {
   final static int[][] DIRECTIONS = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
-  TrieNode trie;
 
   public List<String> findWords(char[][] board, String[] words) {
     List<String> answer = new LinkedList<>();
@@ -11,7 +10,7 @@ class Solution {
     }
 
     // build a tree out of the words array to help us navigate the word search
-    buildTree(words);
+    TrieNode trie = buildTree(words);
     Set<String> found = new HashSet<>();
 
     // for every char in the board, see if we can start a word from there
@@ -56,21 +55,14 @@ class Solution {
     board[i][j] = current; // put the placeholder back for future DFS
   }
 
-  public void buildTree(String[] words) {
-    trie = new TrieNode(new HashMap<>(), false);
+  public TrieNode buildTree(String[] words) {
+    TrieNode trie = new TrieNode();
 
     for (String word : words) {
-      TrieNode temp = trie;
-      for (char c : word.toCharArray()) {
-        if (!temp.children.containsKey(c)) {
-          temp.children.put(c, new TrieNode(new HashMap<>(), false));
-        }
-
-        temp = temp.children.get(c);
-      }
-
-      temp.isWord = true;
+      trie.addWord(word);
     }
+
+    return trie;
   }
 
   public static void main(String[] args) {
