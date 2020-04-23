@@ -8,4 +8,17 @@ public class TrieNode {
     this.children = children;
     this.isWord = isWord;
   }
+
+  public boolean containsWord(String word) {
+    TrieNode temp = this;
+
+    for (char c : word.toCharArray()) {
+      temp = temp.children.getOrDefault(c, null);
+      if (temp == null) {
+        return false;
+      }
+    }
+
+    return temp.isWord;
+  }
 }
