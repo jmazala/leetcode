@@ -1,23 +1,24 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 class Solution {
   public static boolean canFinish(int numCourses, int[][] prerequisites) {
+    // build graph and populate edges
     List<List<Integer>> edges = new ArrayList<>(numCourses);
+
     for (int i = 0; i < numCourses; i++) {
       edges.add(new LinkedList<>());
     }
 
-    for (int i = 0; i < prerequisites.length; i++) {
-      edges.get(prerequisites[i][0]).add(prerequisites[i][1]);
+    for (int[] prereq : prerequisites) {
+      edges.get(prereq[0]).add(prereq[1]);
     }
 
+    // check for cycle using standard algorithm for every node (course)
     boolean[] visited = new boolean[numCourses];
     boolean[] recursionStack = new boolean[numCourses];
 
     for (int i = 0; i < numCourses; i++) {
-      if (Solution.dfsFindCycle(i, edges, visited, recursionStack)) {
+      if (dfsHasCycle(i, edges, visited, recursionStack)) {
         return false;
       }
     }
@@ -25,31 +26,30 @@ class Solution {
     return true;
   }
 
-  public static boolean dfsFindCycle(int course, List<List<Integer>> edges, boolean[] visited,
-      boolean[] recursionStack) {
-    if (recursionStack[course]) {
+  private static boolean dfsHasCycle(int node, List<List<Integer>> edges, boolean[] visited, boolean[] recursionStack) {
+    if (recursionStack[node]) {
       return true;
     }
 
-    if (visited[course]) {
+    if (visited[node]) {
       return false;
     }
 
-    visited[course] = true;
-    recursionStack[course] = true;
+    visited[node] = true;
+    recursionStack[node] = true;
 
-    for (Integer i : edges.get(course)) {
-      if (Solution.dfsFindCycle(i, edges, visited, recursionStack)) {
+    for (Integer next : edges.get(node)) {
+      if (dfsHasCycle(next, edges, visited, recursionStack)) {
         return true;
       }
     }
 
-    recursionStack[course] = false;
+    recursionStack[node] = false;
     return false;
   }
 
   public static void main(String[] args) {
-    System.out.println(Solution.canFinish(2, new int[][] { { 1, 0 } }));
-    System.out.println(Solution.canFinish(2, new int[][] { { 1, 0 }, { 0, 1 } }));
+    System.out.println(Solution.canFinish(2, new int[][] { { 1, 0 } })); //true
+    System.out.println(Solution.canFinish(2, new int[][] { { 1, 0 }, { 0, 1 } })); //false
   }
 }
