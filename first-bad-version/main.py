@@ -4,14 +4,14 @@
 # def isBadVersion(version):
 
 class Solution:
-  def __init__(self, badVersion):
+  def __init__(self, badVersion: int):
     self.badVersion = badVersion
     return
   
-  def __isBadVersion(self, version):
+  def __isBadVersion(self, version: int) -> bool:
     return version == self.badVersion
 
-  def firstBadVersion(self, n):
+  def firstBadVersion(self, n: int) -> int:
     """
     :type n: int
     :rtype: int
