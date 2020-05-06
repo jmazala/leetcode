@@ -25,6 +25,7 @@ var reverseWords = function (s) {
 };
 
 function reverseArray(array, start, end) {
+  // return array.slice(0, start).concat(array.slice(start, end + 1).reverse()).concat(array.slice(end + 1));
   while (start < end) {
     const temp = array[start];
     array[start] = array[end];
@@ -36,7 +37,7 @@ function reverseArray(array, start, end) {
   return;
 }
 
-// console.log(reverseWords('the sky is blue'));
+console.log(reverseWords('the sky is blue'));
 console.log(reverseWords('  hello world!  '));
 console.log(reverseWords('a good   example'));
 console.log(reverseWords('   one.   +two three?   ~four   !five- '));
