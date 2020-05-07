@@ -4,12 +4,6 @@ const DIRECTIONS = [
   [-1, 0], [1, 0], [0, -1], [0, 1],
   [-1, -1], [-1, 1], [1, -1], [1, 1]
 ];
-const LIVE = 1;
-const DEAD = 0;
-const DIRECTIONS = [
-  [-1, 0], [1, 0], [0, -1], [0, 1],
-  [-1, -1], [-1, 1], [1, -1], [1, 1]
-];
 /**
  * @param {number[][]} board
  * @return {void} Do not return anything, modify board in-place instead.
