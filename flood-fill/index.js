@@ -6,7 +6,7 @@
  * @return {number[][]}
  */
 
-//DFS SOLUTION BECAUSE MAX DIMENSION IS 50
+//DFS SOLUTION IS OK BECAUSE MAX DIMENSION IS 50
 var floodFill = function (image, sr, sc, newColor) {
   const M = image.length;
   if (!M) {
