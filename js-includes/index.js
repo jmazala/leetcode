@@ -1,5 +1,11 @@
 'use strict';
 
+function LinkedListNode(val) {
+  this.val = val;
+  this.next = null;
+  return this;
+}
+
 function TreeNode(val) {
   this.val = val;
   this.left = this.right = null;
@@ -21,3 +27,4 @@ BinaryMatrix.prototype.dimensions = function() {
 
 module.exports.TreeNode = TreeNode;
 module.exports.BinaryMatrix = BinaryMatrix;
+module.exports.LinkedListNode = LinkedListNode;
