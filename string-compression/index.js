@@ -3,42 +3,32 @@
  * @return {number}
  */
 var compress = function (chars) {
-  if (!chars.length) {
-    return [];
+  if (chars.length < 2) {
+    return chars.length;
   }
 
-  if (chars.length == 1) {
-    return chars;
-  }
-
-  //all i have to play with here are pointers
-  //it doesn't care about case.
   let read = 0;
   let write = 0;
-  const n = chars.length;
 
-  while (read < n) {
-    const current = chars[read];
-    let count = 0;
-    while (read < n && chars[read] === current) { //stopping point
+  while (read < chars.length) {
+    const current = chars[read++];
+    let count = 1;
+
+    while (read < chars.length && chars[read] === current) {
       read++;
       count++;
     }
 
-    chars[write] = current;
-    write++;
-
+    chars[write++] = current;
     if (count === 1) {
       continue;
     }
 
-    const numString = count.toString();
-    for (let i = 0; i < numString.length; i++) {
-      chars[write++] = numString[i];
+    for (const c of count.toString()) {
+      chars[write++] = c;
     }
   }
 
-  console.log(chars);
   return write;
 };
 
