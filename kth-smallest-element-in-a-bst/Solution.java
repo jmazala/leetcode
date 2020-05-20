@@ -6,66 +6,61 @@ import java.util.List;
  * left; TreeNode right; TreeNode(int x) { val = x; } }
  */
 class Solution {
-  List<Integer> values;
-  int k;
-  //DFS INORDER
+  
+  // DFS INORDER O(k) time, O(k) space
   public int kthSmallest(TreeNode root, int k) {
-    values = new ArrayList<>();
-    this.k = k;
-    visit(root);
-    return values.get(k-1);
+    List<Integer> values = new ArrayList<>(k);
+    visit(root, k, values);
+    return values.get(k - 1);
   }
 
-    //recursively go down the tree
-    //left, node, right
-  public void visit(TreeNode node) {
-    if (node == null || values.size() >= k) {
+  // recursively go down the tree
+  // left, node, right
+  public void visit(TreeNode node, int k, List<Integer> values) {
+    if (node == null || values.size() == k) {
       return;
     }
-    
-    if (node.left != null && values.size() < k) {
-      visit(node.left);
-    }
 
+    visit(node.left, k, values);
     values.add(node.val);
-
-    if (node.right != null && values.size() < k) {
-      visit(node.right);
+    if (values.size() == k) {
+      return;
     }
+
+    visit(node.right, k, values);
   }
 
-
-  //BFS + HEAP
+  // BFS + HEAP O(n) time and O(n) space
   // public int kthSmallest(TreeNode root, int k) {
-  //   if (root == null) {
-  //     return -1;
-  //   }
-    
-  //   PriorityQueue<TreeNode> minHeap = new PriorityQueue<>((a, b) -> {
-  //     return a.val - b.val;
-  //   });
+  // if (root == null) {
+  // return -1;
+  // }
 
-  //   Queue<TreeNode> queue = new LinkedList<>();
-  //   queue.add(root);
+  // PriorityQueue<TreeNode> minHeap = new PriorityQueue<>((a, b) -> {
+  // return a.val - b.val;
+  // });
 
-  //   while (!queue.isEmpty()) {
-  //     TreeNode node = queue.remove();
-  //     minHeap.add(node);
+  // Queue<TreeNode> queue = new LinkedList<>();
+  // queue.add(root);
 
-  //     if (node.left != null) {
-  //       queue.add(node.left);
-  //     }
+  // while (!queue.isEmpty()) {
+  // TreeNode node = queue.remove();
+  // minHeap.add(node);
 
-  //     if (node.right != null) {
-  //       queue.add(node.right);
-  //     }
-  //   }
+  // if (node.left != null) {
+  // queue.add(node.left);
+  // }
 
-  //   int answer = 0;
-  //   for (int i = 0; i < k; i++) {
-  //     answer = minHeap.remove().val;
-  //   }
+  // if (node.right != null) {
+  // queue.add(node.right);
+  // }
+  // }
 
-  //   return answer;
+  // int answer = 0;
+  // for (int i = 0; i < k; i++) {
+  // answer = minHeap.remove().val;
+  // }
+
+  // return answer;
   // }
 }
