@@ -5,64 +5,61 @@
  */
 class Solution {
 
-  //MERGESORT ALGORITHM
+  //ITERATIVE ALGORITHM
   public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-    if (l1 == null && l2 == null) {
-      return null;
+    ListNode dummyHead = new ListNode();
+    ListNode tail = dummyHead;
+
+    while (true) {
+      if (l1 == null) {
+        tail.next = l2;
+        break;
+      }
+
+      if (l2 == null) {
+        tail.next = l1;
+        break;
+      }
+
+      if (l1.val <= l2.val) {
+        tail.next = l1;
+        l1 = l1.next;
+      } else {
+        tail.next = l2;
+        l2 = l2.next;
+      }
+      
+      tail = tail.next;
     }
 
-    if (l1 == null) {
-      return l2;
-    }
-
-    if (l2 == null) {
-      return l1;
-    }
-
-    ListNode result = null;
-
-    if (l1.val <= l2.val) {
-      result = l1;
-      result.next = mergeTwoLists(l1.next, l2);
-    } else {
-      result = l2;
-      result.next = mergeTwoLists(l1, l2.next);
-    }
-
-    return result;
+    return dummyHead.next;
   }
 
-  //JUST SOMETHING I WROTE
+  //MERGESORT ALGORITHM
   // public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-  // if (l1 == null && l2 == null) {
-  // return null;
-  // }
+  //   if (l1 == null && l2 == null) {
+  //     return null;
+  //   }
 
-  // ListNode head = new ListNode();
-  // ListNode temp = head;
+  //   if (l1 == null) {
+  //     return l2;
+  //   }
 
-  // while (l1 != null || l2 != null) {
-  // if (l1 == null) {
-  // temp.val = l2.val;
-  // l2 = l2.next;
-  // } else if (l2 == null) {
-  // temp.val = l1.val;
-  // l1 = l1.next;
-  // } else if (l1.val <= l2.val) {
-  // temp.val = l1.val;
-  // l1 = l1.next;
-  // } else {
-  // temp.val = l2.val;
-  // l2 = l2.next;
-  // }
+  //   if (l2 == null) {
+  //     return l1;
+  //   }
 
-  // if (l1 != null || l2 != null) {
-  // temp.next = new ListNode();
-  // temp = temp.next;
-  // }
-  // }
+  //   ListNode result = null;
 
-  // return head;
+  //   if (l1.val <= l2.val) {
+  //     result = l1;
+  //     result.next = mergeTwoLists(l1.next, l2);
+  //   } else {
+  //     result = l2;
+  //     result.next = mergeTwoLists(l1, l2.next);
+  //   }
+
+  //   return result;
   // }
 
   public static void main(String[] args) {
