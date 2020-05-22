@@ -1,10 +1,8 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 class Solution {
   public String frequencySort(String s) {
-    if (s == null || s.length() == 0) {
+    if (s == null || s.length() < 2) {
       return "";
     }
 
@@ -13,15 +11,12 @@ class Solution {
       hash.put(c, hash.getOrDefault(c, 0) + 1);
     }
 
-    PriorityQueue<Character> maxHeap = new PriorityQueue<>((a, b) -> {
-      return hash.get(b) - hash.get(a);
-    });
-
+    PriorityQueue<Character> maxHeap = new PriorityQueue<>((a, b) -> hash.get(b) - hash.get(a));
     maxHeap.addAll(hash.keySet());
 
     StringBuilder builder = new StringBuilder();
     while (!maxHeap.isEmpty()) {
-      Character c = maxHeap.remove();
+      char c = maxHeap.remove();
       for (int i = 0; i < hash.get(c); i++) {
         builder.append(c);
       }
