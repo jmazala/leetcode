@@ -11,6 +11,9 @@ class Solution {
     }
 
     TreeNode root = new TreeNode(preorder[0]);
+    if (preorder.length == 1) {
+      return root;
+    }
 
     int rightTreeIndex = 1;
 
@@ -18,16 +21,8 @@ class Solution {
       rightTreeIndex++;
     }
 
-    int[] leftSubtree = Arrays.copyOfRange(preorder, 1, rightTreeIndex);
-    int[] rightSubtree = Arrays.copyOfRange(preorder, rightTreeIndex, preorder.length);
-    root.left = bstFromPreorder(leftSubtree);
-    root.right = bstFromPreorder(rightSubtree);
-
+    root.left = bstFromPreorder(Arrays.copyOfRange(preorder, 1, rightTreeIndex));
+    root.right = bstFromPreorder(Arrays.copyOfRange(preorder, rightTreeIndex, preorder.length));
     return root;
-  }
-
-  public static void main(String[] args) {
-    TreeNode tree = bstFromPreorder(new int[] { 8, 5, 1, 7, 10, 12 });
-    System.out.println(tree);
   }
 }
