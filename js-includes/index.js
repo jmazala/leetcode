@@ -26,6 +26,26 @@ function TreeNode(val) {
   return this;
 };
 
+function bstFromPreorder(preorder) {
+  if (!preorder.length) {
+    return null;
+  }
+
+  const root = new TreeNode(preorder[0]);
+  if (preorder.length === 1) {
+    return root;
+  }
+
+  let i = 1;
+  while (i < preorder.length && preorder[i] < root.val) {
+    i++;
+  }
+
+  root.left = bstFromPreorder(preorder.slice(1, i));
+  root.right = bstFromPreorder(preorder.slice(i));
+  return root;
+};
+
 function BinaryMatrix(arr) {
   this.arr = arr;
   return this;
@@ -40,5 +60,6 @@ BinaryMatrix.prototype.dimensions = function () {
 };
 
 module.exports.TreeNode = TreeNode;
+module.exports.bstFromPreorder = bstFromPreorder;
 module.exports.BinaryMatrix = BinaryMatrix;
 module.exports.LinkedListNode = LinkedListNode;
