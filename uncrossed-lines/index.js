@@ -4,7 +4,28 @@
  * @return {number}
  */
 
-//DP
+//DP like max subsequence
+var maxUncrossedLines = function (A, B) {
+  const dp = Array(A.length + 1).fill().map(i => Array(B.length + 1).fill());
+  for (let a = 0; a <= A.length; a++) {
+    for (let b = 0; b <= B.length; b++) {
+      if (a === 0 || b === 0) {
+        dp[a][b] = 0;
+        continue;
+      }
+
+      if (A[a - 1] === B[b - 1]) {
+        dp[a][b] = dp[a - 1][b - 1] + 1;
+      } else {
+        dp[a][b] = Math.max(dp[a - 1][b], dp[a][b - 1]);
+      }
+    }
+  }
+
+  return dp[A.length][B.length];
+}
+
+//DP bottom up
 var maxUncrossedLines = function (A, B) {
   const dp = Array(A.length + 1).fill().map(i => Array(B.length + 1).fill(0));
 
