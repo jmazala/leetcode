@@ -1,23 +1,45 @@
 import java.util.*;
 
 class Solution {
-
-  // USING DP BOTTOM UP
+  // USING DP TOP DOWN
   public int maxUncrossedLines(int[] A, int[] B) {
+    // use DP for this problem
+    // 2 pointers a and b
     int[][] dp = new int[A.length + 1][B.length + 1];
+    for (int a = 1; a <= A.length; a++) {
+      int curA = A[a - 1];
+      for (int b = 1; b <= B.length; b++) {
+        int curB = B[b - 1];
 
-    for (int a = A.length - 1; a >= 0; a--) {
-      for (int b = B.length - 1; b >= 0; b--) {
-        if (A[a] == B[b]) {
-          dp[a][b] = dp[a + 1][b + 1] + 1;
+        // if A[a] == B[b], add 1 and increment both pointers
+        if (curA == curB) {
+          dp[a][b] = dp[a - 1][b - 1] + 1;
         } else {
-          dp[a][b] = Math.max(dp[a + 1][b], dp[a][b + 1]);
+          // otherwise try decrementing a by 1 and also b by 1
+          dp[a][b] = Math.max(dp[a][b - 1], dp[a - 1][b]);
         }
       }
     }
 
-    return dp[0][0];
+    return dp[A.length][B.length];
   }
+
+  // USING DP BOTTOM UP
+  // public int maxUncrossedLines(int[] A, int[] B) {
+  //   int[][] dp = new int[A.length + 1][B.length + 1];
+
+  //   for (int a = A.length - 1; a >= 0; a--) {
+  //     for (int b = B.length - 1; b >= 0; b--) {
+  //       if (A[a] == B[b]) {
+  //         dp[a][b] = dp[a + 1][b + 1] + 1;
+  //       } else {
+  //         dp[a][b] = Math.max(dp[a + 1][b], dp[a][b + 1]);
+  //       }
+  //     }
+  //   }
+
+  //   return dp[0][0];
+  // }
 
   // USING RECURSION + MEMOIZATION
   // public int maxUncrossedLines(int[] A, int[] B) {
