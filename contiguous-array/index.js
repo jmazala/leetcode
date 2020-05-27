@@ -11,6 +11,7 @@ var findMaxLength = function (nums) {
   for (let i = 0; i < nums.length; i++) {
     count += (nums[i] === 0 ? -1 : 1);
 
+    //in javascript this somehow works with negative indices.  that's amazing
     if (counts[count] !== undefined) {
       maxLength = Math.max(maxLength, i - counts[count]);
     } else {
@@ -21,5 +22,6 @@ var findMaxLength = function (nums) {
   return maxLength;
 }
 
+console.log(findMaxLength([0, 0])); //0
 console.log(findMaxLength([0, 1])); //2
 console.log(findMaxLength([0, 1, 0])); //2
