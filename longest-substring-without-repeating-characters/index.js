@@ -6,42 +6,44 @@
 //optimized sliding window
 var lengthOfLongestSubstring = function (s) {
   let answer = 0;
-  let hash = {};
+  const hash = {};
+  let slow = 0;
+  let fast = 0;
 
-  for (let i = 0, j = 0; j < s.length; j++) {
-    if (hash[s[j]] !== undefined) {
-      i = Math.max(hash[s[j]], i);
+  while (fast < s.length) {
+    const c = s[fast];
+
+    if (c in hash) {
+      slow = Math.max(hash[c], slow);
     }
 
-    answer = Math.max(answer, j - i + 1);
-    hash[s[j]] = j + 1;
+    answer = Math.max(answer, fast - slow + 1);
+    hash[c] = fast + 1;
+    fast++;
   }
 
   return answer;
 };
 
 //sliding window
-// var lengthOfLongestSubstring = function(s) {
-//     //seen a at 0, longest is 1
-//     //seen b at 1, longest is 2
-//     //seen c at 2, longest is 3
-//     //a is at 3.  longest was 3.  go back to right after first a which is index 2
+// var lengthOfLongestSubstring = function (s) {
+//   const set = new Set();
+//   let answer = 0;
+//   let slow = 0;
+//   let fast = 0;
 
-//     const set = new Set();
-//     let answer = 0;
-//     let i = 0;
-//     let j = 0;
-
-//     while (i < s.length && j < s.length) {
-//         if (!set.has(s[j])) {
-//             set.add(s[j]);
-//             j++;
-//             answer = Math.max(answer, j - i);
-//         } else {
-//             set.delete(s[i]);
-//             i++;
-//         }
+//   while (fast < s.length) {
+//     const c = s[fast];
+//     if (!set.has(c)) {
+//       set.add(c);
+//       fast++;
+//       answer = Math.max(answer, fast - slow);
+//     } else {
+//       const toRemove = s[slow];
+//       set.delete(toRemove);
+//       slow++;
 //     }
+//   }
 
-//     return answer;
+//   return answer;
 // };
