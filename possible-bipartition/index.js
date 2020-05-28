@@ -27,9 +27,11 @@ var possibleBipartition = function (N, dislikes) {
     }
 
     groupAssignments[i] = 0;
+    
     const stack = [i];
     while (stack.length) {
       const person = stack.pop();
+      
       for (dislikedPerson of dislikeHash[person]) {
         if (dislikedPerson in groupAssignments) {
           if (groupAssignments[dislikedPerson] === groupAssignments[person]) {

@@ -30,11 +30,12 @@ class Solution {
       }
 
       groupAssignments[i] = GROUP_ONE;
+      
       Stack<Integer> stack = new Stack<>();
       stack.push(i);
-
       while (!stack.isEmpty()) {
         int person = stack.pop();
+        
         for (int dislikedPerson : graph.get(person)) {
           if (groupAssignments[dislikedPerson] != null) {
             if (groupAssignments[dislikedPerson] == groupAssignments[person]) {
