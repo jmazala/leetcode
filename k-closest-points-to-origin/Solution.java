@@ -1,24 +1,26 @@
-import java.util.Arrays;
-import java.util.PriorityQueue;
+import java.util.*;
 
 class Solution {
   public int[][] kClosest(int[][] points, int K) {
     if (points == null || points.length == 0) {
-      int[][] empty = {};
-      return empty;
+      return new int[][] {};
     }
 
     if (points.length == 1) {
       return points;
     }
 
+    // each point [a, b] is sqrt(a^2 + b^2) away from origin
     PriorityQueue<int[]> maxHeap = new PriorityQueue<>((a, b) -> {
-      return (int) (Math.pow(a[0], 2) + Math.pow(a[1], 2)) - (int) (Math.pow(b[0], 2) + Math.pow(b[1], 2));
+      return (int) (Math.pow(b[0], 2) + Math.pow(b[1], 2)) - (int) (Math.pow(a[0], 2) + Math.pow(a[1], 2));
     });
 
     // put them all in the queue
     for (int[] point : points) {
       maxHeap.add(point);
+      if (maxHeap.size() > K) {
+        maxHeap.remove();
+      }
     }
 
     // return K elements
