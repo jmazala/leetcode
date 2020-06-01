@@ -13,6 +13,8 @@ const _ = require('lodash');
 
 var addBinary = function(a, b) {
   const maxLength = Math.max(a.length, b.length);
+
+  //could use 2 pointers but this is just much easier to read
   a = _.padStart(a, maxLength, '0');
   b = _.padStart(b, maxLength, '0');
   
