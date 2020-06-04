@@ -1,7 +1,6 @@
 import java.util.Stack;
 
 class Solution extends Relation {
-  // using a stack
   // public int findCelebrity(int n) {
   // //with knows we figure out 2 things
   // //a knows b, a can't be celebrity
@@ -10,7 +9,7 @@ class Solution extends Relation {
 
   // for (int i = 1; i < n; i++) {
   // if (knows(candidate, i)) {
-  // candidate = 1;
+  // candidate = i;
   // }
   // }
 
@@ -23,6 +22,7 @@ class Solution extends Relation {
   // return candidate;
   // }
 
+  // using a stack
   public int findCelebrity(int n) {
     Stack<Integer> stack = new Stack<>();
     for (int i = 0; i < n; i++) {
@@ -41,6 +41,10 @@ class Solution extends Relation {
       } else if (bKnowsA && !aKnowsB) {
         stack.push(a);
       }
+    }
+
+    if (stack.isEmpty()) {
+      return -1;
     }
 
     // last remaining is the candidate

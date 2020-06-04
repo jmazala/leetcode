@@ -10,23 +10,16 @@
  * @return {boolean}
  */
 var isValidBST = function(root) {
-  return helper(root, null, null);
+  return helper(root, -Infinity, Infinity);
 };
 
 var helper = function(root, lower, upper) {
-  //base case there's nothing here.
   if (!root) {
-      return true;
+    return true;
   }
   
-  const val = root.val;
-  if (lower !== null && val <= lower) {
-      return false;
-  }
-  
-  if (upper !== null && val >= upper) {
-      return false;
-  }
-  
-  return helper(root.right, val, upper) && helper(root.left, lower, val);
+  return root.val > lower &&
+    root.val < upper &&
+    helper(root.right, val, upper) &&
+    helper(root.left, lower, val);
 }
