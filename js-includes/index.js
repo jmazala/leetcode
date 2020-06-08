@@ -59,7 +59,33 @@ BinaryMatrix.prototype.dimensions = function () {
   return [this.arr.length, this.arr[0].length];
 };
 
+function isPalindrome(s, start, end) {
+  if (s.length < 2) {
+    return true;
+  }
+
+  if (start === undefined) {
+    start = 0;
+  }
+
+  if (end === undefined) {
+    end = s.length - 1;
+  }
+
+  while (start <= end) {
+    if (s[start] !== s[end]) {
+      return false;
+    }
+
+    start++;
+    end--;
+  }
+
+  return true;
+}
+
 module.exports.TreeNode = TreeNode;
 module.exports.bstFromPreorder = bstFromPreorder;
 module.exports.BinaryMatrix = BinaryMatrix;
 module.exports.LinkedListNode = LinkedListNode;
+module.exports.isPalindrome = isPalindrome;
