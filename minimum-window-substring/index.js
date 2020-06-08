@@ -12,30 +12,26 @@ var minWindow = function (s, t) {
   let right = 0;
   let answer = [-Infinity, Infinity];
 
-  const windowHash = {};
   const tHash = {};
   for (let i = 0; i < t.length; i++) {
     const c = t[i];
-    windowHash[c] = 0;
     tHash[c] = tHash[c] || 0;
     tHash[c]++;
   }
 
   while (right < s.length) {
     const c = s[right];
-    if (c in windowHash) {
-      windowHash[c]++;
-    }
+    tHash[c]--;
 
-    while (coversChars(windowHash, tHash)) {
+    while (coversChars()) {
       //compare with answer.overwrite if it's smaller
       if ((right - left) < (answer[1] - answer[0])) {
         answer = [left, right];
       }
 
       //contract window
-      const charToRemove = s[left];
-      windowHash[charToRemove]--;
+      const charToAddBack = s[left];
+      tHash[charToAddBack]++;
       left++;
     }
 
@@ -51,7 +47,7 @@ var minWindow = function (s, t) {
   function coversChars() {
     for (let i = 0; i < t.length; i++) {
       const c = t[i];
-      if (windowHash[c] < tHash[c]) {
+      if (tHash[c] > 0) {
         return false;
       }
     }
