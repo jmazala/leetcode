@@ -19,11 +19,19 @@ var minWindow = function (s, t) {
     tHash[c]++;
   }
 
+  let formed = 0;
+  const required = Object.keys(tHash).length;
+
   while (right < s.length) {
     const c = s[right];
-    tHash[c]--;
+    if (c in tHash) {
+      tHash[c]--;
+      if (tHash[c] === 0) {
+        formed++;
+      }
+    }
 
-    while (coversChars()) {
+    while (left <= right && formed === required) {
       //compare with answer.overwrite if it's smaller
       if ((right - left) < (answer[1] - answer[0])) {
         answer = [left, right];
@@ -31,7 +39,13 @@ var minWindow = function (s, t) {
 
       //contract window
       const charToAddBack = s[left];
-      tHash[charToAddBack]++;
+      if (charToAddBack in tHash) {
+        tHash[charToAddBack]++;
+        if (tHash[charToAddBack] > 0) {
+          formed--;
+        }
+      }
+
       left++;
     }
 
@@ -43,17 +57,6 @@ var minWindow = function (s, t) {
   }
 
   return s.slice(answer[0], answer[1] + 1);
-
-  function coversChars() {
-    for (let i = 0; i < t.length; i++) {
-      const c = t[i];
-      if (tHash[c] > 0) {
-        return false;
-      }
-    }
-
-    return true;
-  }
 };
 
 console.log(minWindow('ADOBECODEBANC', 'ABCF')); //''
