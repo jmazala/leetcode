@@ -5,6 +5,7 @@ function LinkedListNode(val) {
   this.next = null;
   return this;
 }
+module.exports.LinkedListNode = LinkedListNode;
 
 LinkedListNode.prototype.print = function () {
   let output = '';
@@ -25,6 +26,7 @@ function TreeNode(val) {
   this.left = this.right = null;
   return this;
 };
+module.exports.TreeNode = TreeNode;
 
 function bstFromPreorder(preorder) {
   if (!preorder.length) {
@@ -45,11 +47,13 @@ function bstFromPreorder(preorder) {
   root.right = bstFromPreorder(preorder.slice(i));
   return root;
 };
+module.exports.bstFromPreorder = bstFromPreorder;
 
 function BinaryMatrix(arr) {
   this.arr = arr;
   return this;
 }
+module.exports.BinaryMatrix = BinaryMatrix;
 
 BinaryMatrix.prototype.get = function (x, y) {
   return this.arr[x][y];
@@ -59,7 +63,7 @@ BinaryMatrix.prototype.dimensions = function () {
   return [this.arr.length, this.arr[0].length];
 };
 
-function isPalindrome(s, start, end) {
+module.exports.isPalindrome = (s, start, end) => {
   if (s.length < 2) {
     return true;
   }
@@ -82,10 +86,17 @@ function isPalindrome(s, start, end) {
   }
 
   return true;
-}
+};
 
-module.exports.TreeNode = TreeNode;
-module.exports.bstFromPreorder = bstFromPreorder;
-module.exports.BinaryMatrix = BinaryMatrix;
-module.exports.LinkedListNode = LinkedListNode;
-module.exports.isPalindrome = isPalindrome;
+module.exports.reverseArray = (array, start, end) => {
+  while (start < end) {
+    swap(array, start++, end--);
+  }
+};
+
+function swap(a, i, j) {
+  const temp = a[i];
+  a[i] = a[j];
+  a[j] = temp;
+}
+module.exports.swap = swap;
