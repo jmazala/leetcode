@@ -1,3 +1,5 @@
+const { ListNode } = require('../js-includes');
+
 /**
  * Definition for singly-linked list.
  * function ListNode(val) {
@@ -10,7 +12,7 @@
  * @param {ListNode} l2
  * @return {ListNode}
  */
-var addTwoNumbers = function (l1, l2) {
+const addTwoNumbers = function (l1, l2) {
   let carry = 0;
   const head = new ListNode();
   let temp = head;
@@ -42,3 +44,8 @@ var addTwoNumbers = function (l1, l2) {
 
   return head;
 };
+
+const l1 = new ListNode(5);
+const l2 = new ListNode(6);
+
+console.log(addTwoNumbers(l1, l2).print());

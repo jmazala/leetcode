@@ -1,11 +1,9 @@
-const _ = require('lodash');
-
 /**
  * @param {number[]} nums
  * @return {number[][]}
  */
 
-var threeSum = function (nums) {
+const threeSum = function (nums) {
   const twoSumHash = {};
   const answer = [];
   const set = new Set();
@@ -41,7 +39,7 @@ var threeSum = function (nums) {
   return answer;
 };
 
-//with 3 pointers
+// with 3 pointers
 // var threeSum = function (nums) {
 //   nums.sort((a, b) => a - b);
 //   const answer = [];
@@ -72,7 +70,7 @@ var threeSum = function (nums) {
 //         while (left < right - 1 && nums[right] === nums[right - 1]) {
 //           right--;
 //         }
-        
+
 //         left++;
 //         right--;
 //         continue;
@@ -91,7 +89,7 @@ var threeSum = function (nums) {
 //   return answer;
 // };
 
-//with a hash table
+// with a hash table
 // var threeSum = function (nums) {
 //   const twoSum = {};
 //   const answer = [];
@@ -127,7 +125,7 @@ var threeSum = function (nums) {
 //   return answer;
 // };
 
-//recursively
+// recursively
 // var threeSum = function (nums) {
 //   const answer = [];
 //   const set = new Set();
@@ -160,7 +158,11 @@ var threeSum = function (nums) {
 //   }
 // };
 
-console.log(JSON.stringify(threeSum([1, -1, -1, 0]))); //[[-1,0,1]]
-console.log(JSON.stringify(threeSum([-1, 0, 1, 2, -1, -4]))); //[[-1,0,1],[-1,-1,2]]
+console.log(JSON.stringify(threeSum([1, -1, -1, 0]))); // [[-1,0,1]]
+console.log(JSON.stringify(threeSum([-1, 0, 1, 2, -1, -4]))); // [[-1,0,1],[-1,-1,2]]
 console.log(JSON.stringify(threeSum([0, 0, 0, 0]))); // [0,0,0]
-console.log(JSON.stringify(threeSum([-4, -2, 1, -5, -4, -4, 4, -2, 0, 4, 0, -2, 3, 1, -5, 0]))); // [[-4,1,3],[-4,0,4],[-2,1,1],[-2,-2,4],[-5,1,4],[0,0,0]]
+console.log(
+  JSON.stringify(
+    threeSum([-4, -2, 1, -5, -4, -4, 4, -2, 0, 4, 0, -2, 3, 1, -5, 0])
+  )
+); // [[-4,1,3],[-4,0,4],[-2,1,1],[-2,-2,4],[-5,1,4],[0,0,0]]

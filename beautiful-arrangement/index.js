@@ -1,17 +1,15 @@
-const _ = require('lodash');
-
 /**
  * @param {number} N
  * @return {number}
  */
-var countArrangement = function (N) {
-  const visited = Array(N+1);
+const countArrangement = function (N) {
+  const visited = Array(N + 1);
   let answer = 0;
   permutations(1);
   // permutations([], _.range(1, N + 1));
   return answer;
 
-  //using an index
+  // using an index
   function permutations(index) {
     if (index > N) {
       answer++;
@@ -19,7 +17,7 @@ var countArrangement = function (N) {
     }
 
     for (let i = 1; i <= N; i++) {
-      if (!visited[i] && (index % i == 0 || i % index === 0)) {
+      if (!visited[i] && (index % i === 0 || i % index === 0)) {
         visited[i] = true;
         permutations(index + 1);
         visited[i] = false;
@@ -27,7 +25,7 @@ var countArrangement = function (N) {
     }
   }
 
-  //coping arrays
+  // coping arrays
   // function permutations(used, remaining) {
   //   const memoKey = used.join(',');
   //   if (memoKey.length > 0 && memo[memoKey] === undefined) {
@@ -49,7 +47,7 @@ var countArrangement = function (N) {
   // }
 };
 
-//we only need to check the last char
+// we only need to check the last char
 // function isBeautifulArrangement(arr) {
 //   const i = arr.length - 1;
 //   return (arr[i] % (i+1) === 0) || ((i+1) % arr[i] === 0);

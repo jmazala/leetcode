@@ -9,7 +9,7 @@
  * @param {string} T
  * @return {boolean}
  */
-var backspaceCompare = function (S, T) {
+const backspaceCompare = function (S, T) {
   let counterS = 0;
   let counterT = 0;
   let ptrS = S.length - 1;
@@ -44,7 +44,7 @@ var backspaceCompare = function (S, T) {
       return false;
     }
 
-    if ((ptrS >= 0) !== (ptrT >= 0)) {
+    if (ptrS >= 0 !== ptrT >= 0) {
       return false;
     }
 
@@ -55,7 +55,7 @@ var backspaceCompare = function (S, T) {
   return true;
 };
 
-console.log(backspaceCompare("ab#c", "ad#c")); //true
-console.log(backspaceCompare("ab##", "c#d#")); //true
-console.log(backspaceCompare("a##c", "#a#c")); //true
-console.log(backspaceCompare("a#c", "b")); //false
+console.log(backspaceCompare('ab#c', 'ad#c')); // true
+console.log(backspaceCompare('ab##', 'c#d#')); // true
+console.log(backspaceCompare('a##c', '#a#c')); // true
+console.log(backspaceCompare('a#c', 'b')); // false

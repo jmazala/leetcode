@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 /**
  * Definition for a binary tree node.
  * function TreeNode(val) {
@@ -9,7 +11,7 @@
  * @param {TreeNode} root
  * @return {number[]}
  */
-var averageOfLevels = function (root) {
+const averageOfLevels = function (root) {
   const valuesPerLevel = [];
 
   if (!root) {
@@ -18,7 +20,7 @@ var averageOfLevels = function (root) {
 
   dfs(root, 0);
 
-  return valuesPerLevel.map(i => _.sum(i) / i.length);
+  return valuesPerLevel.map((i) => _.sum(i) / i.length);
 
   function dfs(node, level) {
     if (!node) {
@@ -31,4 +33,3 @@ var averageOfLevels = function (root) {
     dfs(node.right, level + 1);
   }
 };
-

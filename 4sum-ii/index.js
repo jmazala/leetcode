@@ -5,7 +5,7 @@
  * @param {number[]} D
  * @return {number}
  */
-var fourSumCount = function (A, B, C, D) {
+const fourSumCount = function (A, B, C, D) {
   let answer = 0;
   const abHash = {};
   for (let a = 0; a < A.length; a++) {
@@ -16,7 +16,6 @@ var fourSumCount = function (A, B, C, D) {
     }
   }
 
-  const cdHash = {};
   for (let c = 0; c < C.length; c++) {
     for (let d = 0; d < D.length; d++) {
       const halfSum = C[c] + D[d];
