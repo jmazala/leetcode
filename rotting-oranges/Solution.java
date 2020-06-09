@@ -1,72 +1,74 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 class Solution {
-  public int orangesRotting(int[][] grid) {
-    int FRESH = 1;
-    int ROTTEN = 2;
-    int[][] DIRECTIONS = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+  final static int FRESH = 1;
+  final static int ROTTEN = 2;
+  final static int[][] DIRECTIONS = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
 
-    final int ROWS = grid.length;
-    final int COLUMNS = grid[0].length;
+  public static int orangesRotting(int[][] grid) {
+    final int M = grid.length;
+    if (M == 0) {
+      return -1;
+    }
 
-    int minutes = 0;
-    boolean firstPass = true;
-    int freshCount = 0;
+    final int N = grid[0].length;
+    if (N == 0) {
+      return -1;
+    }
 
-    Queue<int[]> q = new LinkedList<>();
+    int freshOranges = 0;
+    Queue<int[]> queue = new LinkedList<>();
 
-    for (int i = 0; i < ROWS; i++) {
-      for (int j = 0; j < COLUMNS; j++) {
+    for (int i = 0; i < M; i++) {
+      for (int j = 0; j < N; j++) {
         if (grid[i][j] == ROTTEN) {
-          int[] coordinatesAndSteps = { i, j };
-          q.add(coordinatesAndSteps);
+          queue.add(new int[] { i, j });
         } else if (grid[i][j] == FRESH) {
-          freshCount++;
+          freshOranges++;
         }
       }
     }
 
-    while (q.size() > 0) {
-      int numNodes = q.size();
+    if (freshOranges == 0) {
+      return 0;
+    }
+
+    int steps = 0;
+    while (!queue.isEmpty()) {
+      int numNodes = queue.size();
+      steps++;
 
       while (numNodes > 0) {
-        int[] coordinates = q.remove();
-        int i = coordinates[0];
-        int j = coordinates[1];
+        int[] coordinates = queue.remove();
         numNodes--;
+        int curI = coordinates[0];
+        int curJ = coordinates[1];
 
         for (int[] direction : DIRECTIONS) {
-          int newI = i + direction[0];
-          int newJ = j + direction[1];
+          int nextI = curI + direction[0];
+          int nextJ = curJ + direction[1];
 
-          if (newI < 0 || newJ < 0 || newI >= ROWS || newJ >= COLUMNS) {
+          if (nextI < 0 || nextJ < 0 || nextI >= M || nextJ >= N) {
             continue;
           }
-          
-          if (grid[newI][newJ] == FRESH) {
-            int[] newCoordinates = {newI, newJ};
-            q.add(newCoordinates);
-            grid[newI][newJ] = ROTTEN;
-            freshCount--;
+
+          if (grid[nextI][nextJ] == FRESH) {
+            grid[nextI][nextJ] = ROTTEN;
+            queue.add(new int[] { nextI, nextJ });
+            freshOranges--;
+
+            if (freshOranges == 0) {
+              return steps;
+            }
           }
         }
       }
-
-      if (firstPass) {
-        firstPass = false;
-      } else {
-        minutes++;
-      }
     }
 
-    return freshCount == 0 ? minutes : -1;
+    return -1;
   }
 
   public static void main(String[] args) {
-    Solution s = new Solution();
-    int[][] grid = { { 2, 2 }, { 1, 1 }, { 0, 0 }, { 2, 0 } };
-    int answer = s.orangesRotting(grid);
-    System.out.println(answer);
+    System.out.println(Solution.orangesRotting(new int[][] { { 2, 1, 1 }, { 1, 1, 0 }, { 0, 1, 1 } })); // 4
   }
 }
