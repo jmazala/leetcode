@@ -9,7 +9,7 @@
  * @param {TreeNode} root
  * @return {number[]}
  */
-var rightSideView = function (root) {
+const rightSideView = function (root) {
   if (!root) {
     return [];
   }
@@ -23,12 +23,15 @@ var rightSideView = function (root) {
 
   while (queue.length) {
     let numNodes = queue.length;
-    let val;
 
     while (numNodes) {
       const node = queue.shift();
       numNodes--;
-      val = node.val
+      // since BFS left to right we are going level by level.  only keep the last of each level
+
+      if (numNodes === 0) {
+        answer.push(node.val);
+      }
 
       if (node.left) {
         queue.push(node.left);
@@ -38,9 +41,6 @@ var rightSideView = function (root) {
         queue.push(node.right);
       }
     }
-
-    //since BFS left to right we are going level by level.  only keep the last of each level
-    answer.push(node.val);
   }
 
   return answer;
