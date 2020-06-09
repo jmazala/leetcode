@@ -21,6 +21,7 @@
     "object-shorthand": "off",
     "no-continue": "off",
     "no-use-before-define": "off",
-    "prefer-const": "warn"
+    "prefer-const": "warn",
+    "no-restricted-syntax": "off"
   }
 }
