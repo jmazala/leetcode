@@ -24,9 +24,13 @@ const verticalOrder = function (root) {
 
   const hash = {};
   const queue = [[root, 0]];
+  let minColumn = Infinity;
+  let maxColumn = -Infinity;
 
   while (queue.length) {
     const [node, col] = queue.shift();
+    minColumn = Math.min(col, minColumn);
+    maxColumn = Math.max(col, maxColumn);
 
     hash[col] = hash[col] || [];
     hash[col].push(node.val);
@@ -40,9 +44,17 @@ const verticalOrder = function (root) {
     }
   }
 
-  return Object.keys(hash)
-    .sort((a, b) => a - b)
-    .map((i) => hash[i]);
+  const answer = [];
+  for (let i = minColumn; i <= maxColumn; i++) {
+    answer.push(hash[i]);
+  }
+
+  return answer;
+
+  // if we use minColumn and maxColumn we can avoid sorting the keys
+  // return Object.keys(hash)
+  //   .sort((a, b) => a - b)
+  //   .map((i) => hash[i]);
 };
 
 const root = new TreeNode(3);
