@@ -1,46 +1,73 @@
 import java.util.*;
 
+/**
+ * Definition for a binary tree node. public class TreeNode { int val; TreeNode
+ * left; TreeNode right; TreeNode() {} TreeNode(int val) { this.val = val; }
+ * TreeNode(int val, TreeNode left, TreeNode right) { this.val = val; this.left
+ * = left; this.right = right; } }
+ */
 class Solution {
-  List<List<Integer>> answer;
-  Map<Integer, List<Integer>> map;
+  class QueueItem {
+    TreeNode node;
+    int column;
 
-  public List<List<Integer>> verticalTraversal(TreeNode root) {
-    map = new TreeMap<>();
+    public QueueItem(TreeNode node, int column) {
+      this.node = node;
+      this.column = column;
+    }
+  }
 
-    dfs(root, 0);
-    answer = new LinkedList<>();
-
-    // TREEMAP AUTOMATICALLY SORTS BY KEYS TO ITERATE THROUGH
-    for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
-      answer.add(entry.getValue());
+  public List<List<Integer>> verticalOrder(TreeNode root) {
+    List<List<Integer>> answer = new ArrayList<>();
+    if (root == null) {
+      return answer;
     }
 
+    if (root.left == null && root.right == null) {
+      answer.add(new ArrayList<>());
+      answer.get(0).add(root.val);
+      return answer;
+    }
+
+    Map<Integer, List<Integer>> hash = new TreeMap<>();
+
+    Queue<QueueItem> queue = new LinkedList<>();
+    queue.add(new QueueItem(root, 0));
+
+    while (!queue.isEmpty()) {
+      QueueItem item = queue.remove();
+      TreeNode current = item.node;
+      int column = item.column;
+
+      if (!hash.containsKey(column)) {
+        hash.put(column, new ArrayList<>());
+      }
+
+      hash.get(column).add(current.val);
+
+      if (current.left != null) {
+        queue.add(new QueueItem(current.left, column - 1));
+      }
+
+      if (current.right != null) {
+        queue.add(new QueueItem(current.right, column + 1));
+      }
+    }
+
+    answer.addAll(hash.values());
     return answer;
   }
 
-  public void dfs(TreeNode node, int horizontalLevel) {
-    if (node == null) {
-      return;
-    }
-
-    if (!map.containsKey(horizontalLevel)) {
-      map.put(horizontalLevel, new LinkedList<>());
-    }
-
-    map.get(horizontalLevel).add(node.val);
-
-    dfs(node.left, horizontalLevel - 1);
-    dfs(node.right, horizontalLevel + 1);
-  }
-
   public static void main(String[] args) {
-    Solution s = new Solution();
     TreeNode root = new TreeNode(3);
     root.left = new TreeNode(9);
     root.right = new TreeNode(20);
     root.right.left = new TreeNode(15);
     root.right.right = new TreeNode(7);
-    System.out.println(s.verticalTraversal(root)); // [ [ 9 ], [ 3, 15 ], [ 20 ], [ 7 ] ]
+    Solution s = new Solution();
+
+    // [ [ 9 ], [ 3, 15 ], [ 20 ], [ 7 ] ]
+    System.out.println(s.verticalOrder(root));
 
     TreeNode root2 = new TreeNode(1);
     root2.left = new TreeNode(2);
@@ -51,6 +78,8 @@ class Solution {
     root2.right.left.right = new TreeNode(8);
     root2.right.right = new TreeNode(7);
     root2.right.right.right = new TreeNode(9);
-    System.out.println(s.verticalTraversal(root2)); // [ [ 4 ], [ 2 ], [ 1, 5, 6 ], [ 3, 8 ], [ 7 ], [ 9 ] ]
+
+    // [ [ 4 ], [ 2 ], [ 1, 5, 6 ], [ 3, 8 ], [ 7 ], [ 9 ] ]
+    System.out.println(s.verticalOrder(root2));
   }
 }
