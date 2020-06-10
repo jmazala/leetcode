@@ -14,25 +14,28 @@ function TreeNode(val) {
  * @param {TreeNode} root
  * @return {number}
  */
-var diameterOfBinaryTree = function (root) {
-  let answer = 0;
-
+const diameterOfBinaryTree = function (root) {
   if (!root) {
-    return answer;
+    return 0;
   }
+
+  let answer = 0;
 
   const leftHeight = height(root.left);
   const rightHeight = height(root.right);
   const leftDiameter = diameterOfBinaryTree(root.left);
   const rightDiameter = diameterOfBinaryTree(root.right);
 
-  answer = Math.max(leftHeight + rightHeight, Math.max(leftDiameter, rightDiameter));
+  answer = Math.max(
+    leftHeight + rightHeight,
+    Math.max(leftDiameter, rightDiameter)
+  );
   return answer;
 };
 
 function height(node) {
   if (!node) {
-    return 0; //height of no node is 1
+    return 0; // height of no node is 1
   }
 
   return 1 + Math.max(height(node.left), height(node.right));

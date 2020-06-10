@@ -20,6 +20,66 @@ LinkedListNode.prototype.print = function () {
   return output;
 };
 
+LinkedListNode.prototype.middle = function () {
+  let slow = this;
+  let fast = this;
+
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+
+  return slow;
+};
+
+LinkedListNode.prototype.reverse = function () {
+  let prev = null;
+  let current = this;
+
+  while (current) {
+    const next = current;
+    current.next = prev;
+    prev = current;
+    current = next;
+  }
+
+  return prev;
+};
+
+module.exports.mergeLists = function (list1, list2) {
+  if (!list1) {
+    return list2;
+  }
+
+  if (!list2) {
+    return list1;
+  }
+
+  const values = [];
+  while (list1 || list2) {
+    if (list1) {
+      values.push(list1);
+      list1 = list1.next;
+    }
+
+    if (list2) {
+      values.push(list2);
+      list2 = list2.next;
+    }
+  }
+
+  const dummyHead = new LinkedListNode();
+  let temp = dummyHead;
+
+  while (values.length) {
+    temp.next = values.shift();
+    temp = temp.next;
+    temp.next = null;
+  }
+
+  return dummyHead.next;
+};
+
 function TreeNode(val) {
   this.val = val;
   this.left = null;
