@@ -1,18 +1,18 @@
 import java.util.*;
 
 class Solution {
-  public int numJewelsInStones(String J, String S) {
-    if (S.length() == 0 || J.length() == 0) {
+  public int numJewelsInStones(String j, String s) {
+    if (s.length() == 0 || j.length() == 0) {
       return 0;
     }
 
     Set<Character> set = new HashSet<>();
-    for (char jewel : J.toCharArray()) {
+    for (char jewel : j.toCharArray()) {
       set.add(jewel);
     }
 
     int answer = 0;
-    for (char stone : S.toCharArray()) {
+    for (char stone : s.toCharArray()) {
       if (set.contains(stone)) {
         answer++;
       }
@@ -23,8 +23,6 @@ class Solution {
 
   public static void main(String[] args) {
     Solution s = new Solution();
-    String J = "aA";
-    String S = "aAAbbbb";
-    System.out.println(s.numJewelsInStones(J, S)); // 3
+    System.out.println(s.numJewelsInStones("aA", "aAAbbbb")); // 3
   }
 }
