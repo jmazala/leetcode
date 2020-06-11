@@ -25,6 +25,7 @@
     "no-restricted-syntax": "off",
     "yoda": "warn",
     "no-else-return": ["error", { "allowElseIf": false }],
-    "curly": "error"
+    "curly": "error",
+    "consistent-return": "warn"
   }
 }

@@ -12,20 +12,21 @@ class Solution {
       String firstWord = words[i];
       String nextWord = words[i + 1];
 
-      for (int j = 0; i < Math.max(firstWord.length(), nextWord.length()); j++) {
-        if (j >= nextWord.length()) {
+      if (firstWord.length() > nextWord.length() && firstWord.startsWith(nextWord)) {
+        return false;
+      }
+
+      for (int j = 0; j < Math.min(firstWord.length(), nextWord.length()); j++) {
+        int firstIndex = hash.get(firstWord.charAt(j));
+        int secondIndex = hash.get(nextWord.charAt(j));
+
+        if (firstIndex > secondIndex) {
           return false;
         }
 
-        if (firstWord.charAt(j) == nextWord.charAt(j)) {
-          continue;
-        }
-
-        if (hash.get(firstWord.charAt(j)) < hash.get(nextWord.charAt(j))) {
+        if (firstIndex < secondIndex) {
           break;
         }
-
-        return false;
       }
     }
 
