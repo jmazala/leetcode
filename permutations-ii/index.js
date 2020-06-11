@@ -1,8 +1,13 @@
+/*
+ * Given a collection of numbers that might contain duplicates,
+ * return all possible unique permutations.
+ */
+
 /**
  * @param {number[]} nums
  * @return {number[][]}
  */
-var permuteUnique = function (nums) {
+const permuteUnique = function (nums) {
   const results = [];
   const set = new Set();
   helper([], nums);
@@ -13,7 +18,7 @@ var permuteUnique = function (nums) {
       const key = JSON.stringify(taken);
       if (!set.has(key)) {
         results.push(taken);
-        set.add(key)
+        set.add(key);
       }
 
       return;
@@ -29,3 +34,6 @@ var permuteUnique = function (nums) {
     }
   }
 };
+
+// [[1,1,2],[1,2,1],[2,1,1]]
+console.log(JSON.stringify(permuteUnique([1, 1, 2])));

@@ -12,7 +12,7 @@ const possibleBipartition = function (N, dislikes) {
 
   const dislikeHash = Array(N + 1)
     .fill()
-    .map((i) => Array(0).fill());
+    .map(() => Array(0).fill());
 
   // each dislike is an EDGE on the GRAPH we can't traverse
   for (const [person1, person2] of dislikes) {
