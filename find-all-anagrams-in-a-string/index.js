@@ -4,8 +4,8 @@
  * @return {number[]}
  */
 
-//SLIDING WINDOW SOLUTION
-var findAnagrams = function (s, p) {
+// SLIDING WINDOW SOLUTION
+const findAnagrams = function (s, p) {
   const answer = [];
   if (p.length === 0 || s.length === 0 || s.length < p.length) {
     return answer;
@@ -20,41 +20,43 @@ var findAnagrams = function (s, p) {
 
   let left = 0;
   let right = 0;
-  let charsLeft = p.length; //size of string we're looking for in s
+  let charsLeft = p.length; // size of string we're looking for in s
 
   while (right < s.length) {
     const cRight = s[right];
+    right++;
 
     if (hash[cRight] > 0) {
       charsLeft--;
     }
 
     hash[cRight]--;
-    right++;
 
-    if (charsLeft === 0) {
-      answer.push(left);
-    }
-
+    // check sliding window size.  if it's not the length of p
+    // we need to keep expanding
     const slidingWindowSize = right - left;
     if (slidingWindowSize < p.length) {
       continue;
     }
 
-    //window is at biggest size, need to start incrementing counts again
+    if (charsLeft === 0) {
+      answer.push(left);
+    }
+
+    // window is at biggest size, need to start incrementing counts again
     const cLeft = s[left];
+    left++;
     if (hash[cLeft] >= 0) {
       charsLeft++;
     }
 
     hash[cLeft]++;
-    left++;
   }
 
   return answer;
 };
 
-//RECURSIVE SOLUTION
+// RECURSIVE SOLUTION
 // var findAnagrams = function (s, p) {
 //   const answer = [];
 //   if (p.length === 0 || s.length === 0) {
@@ -93,5 +95,5 @@ var findAnagrams = function (s, p) {
 //   }
 // };
 
-console.log(findAnagrams('cbaebabacd', 'abc')); // [0, 6]
-console.log(findAnagrams('baa', 'aa')); // [1]
+console.log(JSON.stringify(findAnagrams('cbaebabacd', 'abc'))); // [0, 6]
+console.log(JSON.stringify(findAnagrams('baa', 'aa'))); // [1]
