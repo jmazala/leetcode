@@ -11,18 +11,26 @@ class Solution {
       return true;
     }
 
-    /*
-     * char counts hash of size s1.length() s1 char counts is permanent s2 char
-     * counts is adjusted at every index
-     */
+    // since we have 26 finite characters it's faster to build array than a hash
+    // hash is more readable though
     int[] s1CharCounts = new int[26];
     int[] s2CharCounts = new int[26];
+
+    // use sliding window the length of s1
+    // since permutation needs to contain all the characters
+    // s1 char map is permanent
+    // s2 char map is not permanent.
+    // initial state of s2 char map is the first n characters
+    // where n = s1.length
     for (int i = 0; i < s1.length(); i++) {
       s1CharCounts[s1.charAt(i) - 'a']++;
       s2CharCounts[s2.charAt(i) - 'a']++;
     }
 
+    // since sliding window is of size s1.length, we can't exceed
+    // the entire length of s2 (i.e. starting index i is too far to the right)
     for (int i = 0; i < s2.length() - s1.length(); i++) {
+      // does the current sliding window represent a permutation?
       if (arraysMatch(s1CharCounts, s2CharCounts)) {
         return true;
       }
@@ -41,7 +49,7 @@ class Solution {
   }
 
   private boolean arraysMatch(int[] s1CharCounts, int[] s2CharCounts) {
-    for (int i = 1; i < s1CharCounts.length; i++) {
+    for (int i = 0; i < s1CharCounts.length; i++) {
       if (s1CharCounts[i] != s2CharCounts[i]) {
         return false;
       }
