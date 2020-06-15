@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 class Solution {
   public List<Integer> findAnagrams(String s, String p) {
@@ -20,12 +21,12 @@ class Solution {
 
     // start sliding window
     while (right < s.length()) {
-      char cRight = s.charAt(right);
-      if (counts[cRight - 'a'] > 0) {
+      char chRight = s.charAt(right);
+      if (counts[chRight - 'a'] > 0) {
         charsUsed++;
       }
 
-      counts[cRight - 'a']--;
+      counts[chRight - 'a']--;
       right++;
 
       if (charsUsed == p.length()) {
@@ -37,12 +38,12 @@ class Solution {
         continue;
       }
 
-      char cLeft = s.charAt(left);
-      if (counts[cLeft - 'a'] >= 0) {
+      char chLeft = s.charAt(left);
+      if (counts[chLeft - 'a'] >= 0) {
         charsUsed--;
       }
 
-      counts[cLeft - 'a']++;
+      counts[chLeft - 'a']++;
       left++;
     }
 

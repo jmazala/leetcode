@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Arrays;
 
 public class TreeNode {
   int val;
@@ -9,6 +9,12 @@ public class TreeNode {
     this.val = val;
   }
 
+  /**
+   * takes a array of ints in preorder and returns a binary tree.
+   * 
+   * @param preorder array of numbers in preorder
+   * @return TreeNode
+   */
   public static TreeNode bstFromPreorder(int[] preorder) {
     if (preorder == null || preorder.length == 0) {
       return null;

@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.PriorityQueue;
 
 class Solution {
   class HeapItem {
