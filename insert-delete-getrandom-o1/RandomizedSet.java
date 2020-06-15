@@ -25,8 +25,9 @@ class RandomizedSet {
       return false;
     }
 
+    int index = this.values.size();
     this.values.add(val);
-    this.indices.put(val, this.values.size() - 1);
+    this.indices.put(val, index);
     return true;
   }
 
@@ -43,12 +44,14 @@ class RandomizedSet {
     this.indices.remove(val);
 
     // swap last element with the one to remove if it's not already last
-    if (valIndex != this.values.size() - 1) {
-      int lastElement = this.values.get(this.values.size() - 1);
-      this.values.set(valIndex, lastElement);
-      this.indices.put(lastElement, valIndex);
+    if (valIndex == this.values.size() - 1) {
+      this.values.remove(valIndex);
+      return true;
     }
 
+    int lastElement = this.values.get(this.values.size() - 1);
+    this.values.set(valIndex, lastElement);
+    this.indices.put(lastElement, valIndex);
     this.values.remove(this.values.size() - 1);
     return true;
   }
