@@ -1,4 +1,6 @@
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 class Solution {
   public List<List<Integer>> threeSum(int[] nums) {

@@ -1,4 +1,6 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 class Solution {
   public static boolean canFinish(int numCourses, int[][] prerequisites) {
@@ -49,7 +51,7 @@ class Solution {
   }
 
   public static void main(String[] args) {
-    System.out.println(Solution.canFinish(2, new int[][] { { 1, 0 } })); //true
-    System.out.println(Solution.canFinish(2, new int[][] { { 1, 0 }, { 0, 1 } })); //false
+    System.out.println(Solution.canFinish(2, new int[][] { { 1, 0 } })); // true
+    System.out.println(Solution.canFinish(2, new int[][] { { 1, 0 }, { 0, 1 } })); // false
   }
 }

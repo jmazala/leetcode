@@ -32,6 +32,6 @@ class Solution {
     root.right.right = new TreeNode(7);
 
     Solution s = new Solution();
-    System.out.println(s.maxPathSum(root)); //42
+    System.out.println(s.maxPathSum(root)); // 42
   }
 }

@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,12 +10,11 @@ import java.util.Set;
 class Solution {
   List<TreeNode> answer;
   Set<Integer> delete;
-  int[] to_delete;
 
-  public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+  public List<TreeNode> delNodes(TreeNode root, int[] toDelete) {
     answer = new ArrayList<>();
     delete = new HashSet<>();
-    for (int i : to_delete) {
+    for (int i : toDelete) {
       delete.add(i);
     }
 
@@ -61,7 +59,7 @@ class Solution {
     root.right.left = new TreeNode(6);
     root.right.right = new TreeNode(7);
     Solution s = new Solution();
-    int[] to_delete = { 3, 5 };
-    System.out.println(s.delNodes(root, to_delete));
+    int[] toDelete = { 3, 5 };
+    System.out.println(s.delNodes(root, toDelete));
   }
 }

@@ -29,14 +29,14 @@ class Solution {
 
   // recursive
   // public List<Integer> inorderTraversal(TreeNode root) {
-  //   List<Integer> answer = new ArrayList<>();
-  //   if (root == null) {
-  //     return answer;
-  //   }
+  // List<Integer> answer = new ArrayList<>();
+  // if (root == null) {
+  // return answer;
+  // }
 
-  //   answer.addAll(inorderTraversal(root.left));
-  //   answer.add(root.val);
-  //   answer.addAll(inorderTraversal(root.right));
-  //   return answer;
+  // answer.addAll(inorderTraversal(root.left));
+  // answer.add(root.val);
+  // answer.addAll(inorderTraversal(root.right));
+  // return answer;
   // }
 }

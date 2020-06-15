@@ -1,19 +1,19 @@
-import java.util.*;
-
-// Definition for a Node.
-class Node {
-  int val;
-  Node next;
-  Node random;
-
-  public Node(int val) {
-    this.val = val;
-    this.next = null;
-    this.random = null;
-  }
-}
+import java.util.HashMap;
+import java.util.Map;
 
 class Solution {
+  private class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+      this.val = val;
+      this.next = null;
+      this.random = null;
+    }
+  }
+
   public Node copyRandomList(Node head) {
     Map<Node, Node> clones = new HashMap<>();
     clones.put(null, null);

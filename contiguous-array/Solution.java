@@ -2,9 +2,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Solution {
+
+  /**
+   * find max length of something.
+   * 
+   * @param nums nums to track counts
+   * @return int
+   */
   public static int findMaxLength(int[] nums) {
     Map<Integer, Integer> countsAtIndex = new HashMap<>();
-    countsAtIndex.put(0, -1); //we're keeping track of indices and we initialize at 0
+    countsAtIndex.put(0, -1); // we're keeping track of indices and we initialize at 0
     int maxLength = 0;
     int count = 0;
 
@@ -22,6 +29,6 @@ public class Solution {
   }
 
   public static void main(String[] args) {
-    System.out.println(Solution.findMaxLength(new int[] {0, 1, 0, 0, 1, 0, 0, 1, 0, 1})); //6
+    System.out.println(Solution.findMaxLength(new int[] { 0, 1, 0, 0, 1, 0, 0, 1, 0, 1 })); // 6
   }
 }

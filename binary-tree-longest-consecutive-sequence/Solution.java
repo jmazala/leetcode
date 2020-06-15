@@ -24,12 +24,13 @@ class Solution {
   }
 
   public static void main(String[] args) {
-    Solution s = new Solution();
     TreeNode root = new TreeNode(2);
     root.right = new TreeNode(3);
     root.right.left = new TreeNode(2);
     root.right.left.left = new TreeNode(1);
+    Solution s = new Solution();
     System.out.println(s.longestConsecutiveSequence(root));
+
     TreeNode root2 = new TreeNode(1);
     root2.right = new TreeNode(3);
     root2.right.left = new TreeNode(2);

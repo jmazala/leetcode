@@ -27,7 +27,7 @@ class Solution {
     for (int i = 0; i < Math.max(num1.length(), num2.length()); i++) {
       int place = carry ? 1 : 0;
       carry = false;
-      
+
       if (i < num1.length()) {
         place += num1.charAt(i) - '0';
       }
