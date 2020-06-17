@@ -2,7 +2,7 @@
  * @param {number[][]} intervals
  * @return {number[][]}
  */
-var merge = function (intervals) {
+const merge = function (intervals) {
   if (intervals.length < 2) {
     return intervals;
   }
@@ -15,7 +15,7 @@ var merge = function (intervals) {
   while (intervals.length) {
     const nextInterval = intervals.shift();
 
-    //starts in the middle
+    // starts in the middle
     if (nextInterval[0] <= currentInterval[1]) {
       currentInterval[1] = Math.max(currentInterval[1], nextInterval[1]);
     } else {
