@@ -2,20 +2,20 @@
  * @param {number[]} nums
  * @return {number}
  */
-var findPeakElement = function (nums) {
-  //can do linear scan but they want logarithmic
-  let left = 0;
-  let right = nums.length - 1;
+const findPeakElement = function (nums) {
+  // can do linear scan but they want logarithmic
+  let low = 0;
+  let high = nums.length - 1;
 
-  while (left < right) {
-    const mid = Math.floor(left + (right - left) / 2);
+  while (low < high) {
+    const mid = Math.floor(low + (high - low) / 2);
 
     if (nums[mid] < nums[mid + 1]) {
-      left = mid + 1;
+      low = mid + 1;
     } else {
-      right = mid;
+      high = mid;
     }
   }
 
-  return left;
+  return low;
 };
