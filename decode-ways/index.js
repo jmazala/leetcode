@@ -22,22 +22,22 @@
 //  * @param {string} s
 //  * @return {number}
 //  */
-var numDecodings = function (s) {
+const numDecodings = function (s) {
   if (s[0] === '0') {
     return 0;
   }
 
-  dp = Array(s.length + 1).fill(0);
-  dp[0] = 1; //number of ways to decode a string of length 0... only 1 way.
-  //number of ways to decode a string of length 1... also only 1 way
-  //this is because we checked for first char 0 above.  ruins decoding of any string length
+  const dp = Array(s.length + 1).fill(0);
+  dp[0] = 1; // number of ways to decode a string of length 0... only 1 way.
+  // number of ways to decode a string of length 1... also only 1 way
+  // this is because we checked for first char 0 above.  ruins decoding of any string length
   dp[1] = 1;
 
   for (let i = 2; i <= s.length; i++) {
-    oneDigit = parseInt(s.slice(i - 1, i));
-    twoDigit = parseInt(s.slice(i - 2, i));
+    const oneDigit = parseInt(s.slice(i - 1, i), 10);
+    const twoDigit = parseInt(s.slice(i - 2, i), 10);
 
-    //do they have mappings?
+    // do they have mappings?
     if (oneDigit >= 1) {
       dp[i] += dp[i - 1];
     }
@@ -45,7 +45,6 @@ var numDecodings = function (s) {
     if (twoDigit >= 10 && twoDigit <= 26) {
       dp[i] += dp[i - 2];
     }
-
   }
 
   return dp[s.length];
@@ -121,7 +120,7 @@ var numDecodings = function (s) {
 //   return helper(s[0]) + helper(s.slice(0, 2)) + helper(s.slice(1, 3)) + helper(s[2]) + helper(s.slice(3));
 // }
 
-//USING RECURSION 
+// USING RECURSION
 // var numDecodings = function (s) {
 //   if (s.length === 1 && s[0] !== '0') {
 //     return 1;
@@ -174,10 +173,11 @@ var numDecodings = function (s) {
 //   return helper(data.slice(0, 2)) + helper(data.slice(2));
 // };
 
-console.log(numDecodings('10'));
-console.log(numDecodings('100'));
-console.log(numDecodings('111'));
-console.log(numDecodings('12'));
-console.log(numDecodings('226'));
+// console.log(numDecodings('10'));
+// console.log(numDecodings('100'));
+// console.log(numDecodings('111'));
+// console.log(numDecodings('12'));
+// console.log(numDecodings('226'));
+console.log(numDecodings('2685'));
 // console.log(numDecodings('2263'));
 // console.log(numDecodings('0111'));
