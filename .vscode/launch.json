@@ -1,4 +1,19 @@
 {
   "version": "0.2.0",
-  "configurations": []
+  "configurations": [
+    {
+      "name": "Python",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Node.js",
+      "program": "${file}",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
 }

@@ -173,11 +173,11 @@ const numDecodings = function (s) {
 //   return helper(data.slice(0, 2)) + helper(data.slice(2));
 // };
 
-// console.log(numDecodings('10'));
-// console.log(numDecodings('100'));
-// console.log(numDecodings('111'));
-// console.log(numDecodings('12'));
-// console.log(numDecodings('226'));
-console.log(numDecodings('2685'));
-// console.log(numDecodings('2263'));
-// console.log(numDecodings('0111'));
+console.log(numDecodings('100')); // 0
+console.log(numDecodings('0111')); // 0
+console.log(numDecodings('10')); // 1
+console.log(numDecodings('12')); // 2
+console.log(numDecodings('2685')); // 2
+console.log(numDecodings('111')); // 3
+console.log(numDecodings('226')); // 3
+console.log(numDecodings('2263')); // 3
