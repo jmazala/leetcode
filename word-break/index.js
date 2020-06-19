@@ -5,20 +5,30 @@
  */
 
 // USING DYNAMIC PROGRAMMING
-// TIME:  O(n) to make DP array, O(n) for outer for loop, O(w) for inner for loop = O(n * w)
-// TIME (CONT):  but how much for starts with?  O(w) again.  = O(n) * O(w) * O(w) = O(n * w^2)
+// TIME:  O(n) to make DP array:
+//    O(w log w) to sort words array
+//    O(n) for outer for loop
+//    O(w) for inner for loop = O(n * w)
+//    O(w) for startsWith
+//   = O(w log w) + O(n) * O(w) * O(w) = O(n * w^2) + O(w log w) = O(n * w^2)
 // SPACE:  O(n) for dp array
 const wordBreak = function (s, wordDict) {
+  if (wordDict.length === 0) {
+    return s.length === 0;
+  }
   /*
    * we can divide this into subproblems s1 & s2
    * i.e. "catsanddog" => "catsand" / "dog" => "cats" / "and" / "dog"
    */
 
-  // wordDict = new Set(wordDict);
   const dp = Array(s.length + 1).fill(false);
   dp[0] = true;
 
-  for (let end = 1; end <= s.length; end++) {
+  // we could sort the array of words to have `end` start further up
+  // depending on the makeup of our words dictionary this could save us a lot of iterations
+  wordDict.sort((a, b) => a.length - b.length);
+
+  for (let end = wordDict[0].length; end <= s.length; end++) {
     for (const word of wordDict) {
       const start = end - word.length;
       if (start < 0) {
