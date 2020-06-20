@@ -6,10 +6,10 @@ import java.util.Stack;
  * TreeNode(int val, TreeNode left, TreeNode right) { this.val = val; this.left
  * = left; this.right = right; } }
  */
-class BSTIterator {
+class BstIterator {
   Stack<TreeNode> stack;
 
-  public BSTIterator(TreeNode root) {
+  public BstIterator(TreeNode root) {
     this.stack = new Stack<>();
     this.populateStack(root);
   }

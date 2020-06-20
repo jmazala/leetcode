@@ -16,32 +16,46 @@ const wordBreak = function (s, wordDict) {
   if (wordDict.length === 0) {
     return s.length === 0;
   }
+
   /*
    * we can divide this into subproblems s1 & s2
    * i.e. "catsanddog" => "catsand" / "dog" => "cats" / "and" / "dog"
    */
+
+  wordDict = new Set(wordDict);
 
   const dp = Array(s.length + 1).fill(false);
   dp[0] = true;
 
   // we could sort the array of words to have `end` start further up
   // depending on the makeup of our words dictionary this could save us a lot of iterations
-  wordDict.sort((a, b) => a.length - b.length);
+  // wordDict.sort((a, b) => a.length - b.length);
 
-  for (let end = wordDict[0].length; end <= s.length; end++) {
-    for (const word of wordDict) {
-      const start = end - word.length;
-      if (start < 0) {
+  // for (let end = wordDict[0].length; end <= s.length; end++) {
+  for (let end = 1; end <= s.length; end++) {
+    for (let start = 0; start < end; start++) {
+      if (!dp[start]) {
         continue;
       }
 
-      const canGetHere = dp[start] && s.startsWith(word, start);
-      if (canGetHere) {
+      if (wordDict.has(s.substring(start, end))) {
         dp[end] = true;
-        // don't need to find other ways to get here.  we just can and it's fine.
         break;
       }
     }
+    // for (const word of wordDict) {
+    //   const start = end - word.length;
+    //   if (start < 0) {
+    //     continue;
+    //   }
+
+    //   const canGetHere = dp[start] && s.startsWith(word, start);
+    //   if (canGetHere) {
+    //     dp[end] = true;
+    //     // don't need to find other ways to get here.  we just can and it's fine.
+    //     break;
+    //   }
+    // }
   }
 
   return dp[dp.length - 1];
