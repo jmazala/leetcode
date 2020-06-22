@@ -12,13 +12,18 @@ File.prototype.addContent = function (contents) {
 
 const Folder = function (path) {
   this.path = path;
-  this.files = {};
+  this.fileMap = {};
   this.subFolders = {};
   return this;
 };
 
 Folder.prototype.makeSubdirectory = function (path) {
-  this.subFolders[path] = new Folder(path);
+  let subFolderPath = [this.path, path].join(SEPARATOR);
+  if (this.path === '/') {
+    subFolderPath = this.path + path;
+  }
+
+  this.subFolders[path] = new Folder(subFolderPath);
 };
 
 Folder.prototype.hasSubFolder = function (path) {
@@ -30,7 +35,7 @@ Folder.prototype.getSubFolder = function (path) {
 };
 
 Folder.prototype.hasFile = function (fileName) {
-  return fileName in this.files;
+  return fileName in this.fileMap;
 };
 
 Folder.prototype.createFile = function (fileName) {
@@ -53,18 +58,30 @@ const FileSystem = function () {
  */
 FileSystem.prototype.ls = function (path) {};
 
+FileSystem.prototype.createBaseDir = function () {
+  this.folderMap['/'] = this.folderMap['/'] || new Folder('/');
+};
+
+FileSystem.prototype.getBaseDir = function () {
+  return this.folderMap['/'];
+};
+
 /**
  * @param {string} path
  * @return {void}
  */
 FileSystem.prototype.mkdir = function (path) {
-  const subPaths = path.split(SEPARATOR);
-  const basePath = subPaths[0];
-  if (!this.isFolder(basePath)) {
-    this.fileMap[basePath] = new Folder(basePath);
+  if (path === '/') {
+    this.createBaseDir();
+    return;
   }
 
-  let folder = this.fileMap[basePath];
+  const subPaths = path.split(SEPARATOR);
+  if (!this.getBaseDir()) {
+    this.createBaseDir();
+  }
+
+  let folder = this.getBaseDir();
 
   for (let i = 1; i < subPaths.length; i++) {
     const subFolder = subPaths[i];
@@ -101,12 +118,12 @@ FileSystem.prototype.readContentFromFile = function (filePath) {
   const subPaths = filePath.split(SEPARATOR);
   const fileName = subPaths.pop();
   const folder = this.getSubFolder(subPaths);
-  const file = folder.getFile[fileName];
+  const file = folder.getFile(fileName);
   return file.contents;
 };
 
 FileSystem.prototype.getSubFolder = function (subPaths) {
-  let folder = this.folderMap(subPaths[0]);
+  let folder = this.getBaseDir();
   // TODO:  if !folder, throw error or something
 
   for (let i = 1; i < subPaths.length; i++) {
@@ -128,4 +145,9 @@ FileSystem.prototype.getSubFolder = function (subPaths) {
  */
 
 const fs = new FileSystem();
+fs.mkdir('/');
 fs.mkdir('/a/b/c');
+fs.addContentToFile('/a/b/c/d', 'hello');
+console.log(fs.readContentFromFile('/a/b/c/d')); // hello
+fs.addContentToFile('/a/b/c/d', ' world');
+console.log(fs.readContentFromFile('/a/b/c/d')); // hello world
