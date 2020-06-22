@@ -70,6 +70,10 @@ FileSystem.prototype.ls = function (path) {
 
   if (path === '/') {
     folder = this.getBaseDir();
+    if (!folder) {
+      return output;
+    }
+
     output = output.concat(folder.getFiles());
     output = output.concat(folder.getSubFolders());
   } else {
@@ -184,3 +188,22 @@ fs.addContentToFile('/a/b/c/d', ' world');
 console.log(fs.readContentFromFile('/a/b/c/d')); // hello world
 console.log(JSON.stringify(fs.ls('/a/b/c'))); // 'd'
 console.log(JSON.stringify(fs.ls('/'))); // ['a']
+
+const fs2 = new FileSystem();
+console.log(JSON.stringify(fs2.ls('/'))); // []
+fs2.mkdir('/a/b/c');
+fs2.addContentToFile('/a/b/c/d', 'hello');
+console.log(JSON.stringify(fs2.ls('/'))); // ["a"]
+console.log(fs2.readContentFromFile('/a/b/c/d')); // hello
+
+const fs3 = new FileSystem();
+fs3.mkdir('/goowmfn');
+console.log(JSON.stringify(fs3.ls('/goowmfn'))); // []
+console.log(JSON.stringify(fs3.ls('/'))); // ["goowmfn"]
+fs3.mkdir('/z');
+console.log(JSON.stringify(fs3.ls('/'))); // ["goodwmfn", "z"]
+console.log(JSON.stringify(fs3.ls('/'))); // ["goodwmfn", "z"]
+fs3.addContentToFile('/goowmfn/c', 'shetopcy');
+console.log(JSON.stringify(fs3.ls('/z'))); // []
+console.log(JSON.stringify(fs3.ls('/goowmfn/c'))); // ["c"]
+console.log(JSON.stringify(fs3.ls('/goowmfn'))); // ["c"]
