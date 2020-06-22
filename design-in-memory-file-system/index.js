@@ -13,7 +13,7 @@ File.prototype.addContent = function (contents) {
 const Folder = function (path) {
   this.path = path;
   this.fileMap = {};
-  this.subFolders = {};
+  this.folderMap = {};
   return this;
 };
 
@@ -23,15 +23,15 @@ Folder.prototype.makeSubdirectory = function (path) {
     subFolderPath = this.path + path;
   }
 
-  this.subFolders[path] = new Folder(subFolderPath);
+  this.folderMap[path] = new Folder(subFolderPath);
 };
 
 Folder.prototype.hasSubFolder = function (path) {
-  return path in this.subFolders;
+  return path in this.folderMap;
 };
 
 Folder.prototype.getSubFolder = function (path) {
-  return this.subFolders[path];
+  return this.folderMap[path];
 };
 
 Folder.prototype.hasFile = function (fileName) {
@@ -46,6 +46,14 @@ Folder.prototype.getFile = function (fileName) {
   return this.fileMap[fileName];
 };
 
+Folder.prototype.getFiles = function () {
+  return Object.keys(this.fileMap);
+};
+
+Folder.prototype.getSubFolders = function () {
+  return Object.keys(this.folderMap);
+};
+
 const FileSystem = function () {
   this.fileMap = {};
   this.folderMap = {};
@@ -56,7 +64,29 @@ const FileSystem = function () {
  * @param {string} path
  * @return {string[]}
  */
-FileSystem.prototype.ls = function (path) {};
+FileSystem.prototype.ls = function (path) {
+  let output = [];
+  let folder;
+
+  if (path === '/') {
+    folder = this.getBaseDir();
+    output = output.concat(folder.getFiles());
+    output = output.concat(folder.getSubFolders());
+  } else {
+    const subPaths = path.split(SEPARATOR);
+    const finalSubPath = subPaths.pop();
+    folder = this.getSubFolder(subPaths);
+    if (folder.hasSubFolder(finalSubPath)) {
+      folder = folder.getSubFolder(finalSubPath);
+      output = output.concat(folder.getFiles());
+      output = output.concat(folder.getSubFolders());
+    } else {
+      output = [path];
+    }
+  }
+
+  return output.sort();
+};
 
 FileSystem.prototype.createBaseDir = function () {
   this.folderMap['/'] = this.folderMap['/'] || new Folder('/');
@@ -146,8 +176,11 @@ FileSystem.prototype.getSubFolder = function (subPaths) {
 
 const fs = new FileSystem();
 fs.mkdir('/');
+console.log(JSON.stringify(fs.ls('/'))); // []
 fs.mkdir('/a/b/c');
 fs.addContentToFile('/a/b/c/d', 'hello');
 console.log(fs.readContentFromFile('/a/b/c/d')); // hello
 fs.addContentToFile('/a/b/c/d', ' world');
 console.log(fs.readContentFromFile('/a/b/c/d')); // hello world
+console.log(JSON.stringify(fs.ls('/a/b/c'))); // 'd'
+console.log(JSON.stringify(fs.ls('/'))); // ['a']
