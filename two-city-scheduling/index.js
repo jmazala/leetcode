@@ -5,17 +5,17 @@ const _ = require('lodash');
  * @return {number}
  */
 
-//GREEDY
-var twoCitySchedCost = function (costs) {
+// GREEDY
+const twoCitySchedCost = function (costs) {
   if (costs.length === 0) {
     return 0;
   }
 
   let answer = 0;
-  const N = costs.length / 2; //always even
+  const N = costs.length / 2; // always even
 
   costs.sort((a, b) => {
-    return (a[0] - a[1]) - (b[0] - b[1]);
+    return a[0] - a[1] - (b[0] - b[1]);
   });
 
   for (let i = 0; i < N; i++) {
@@ -25,7 +25,7 @@ var twoCitySchedCost = function (costs) {
   return answer;
 };
 
-//ALL PERMUTATIONS
+// ALL PERMUTATIONS
 // var twoCitySchedCost = function (costs) {
 //   if (costs.length === 0) {
 //     return 0;
@@ -58,4 +58,11 @@ var twoCitySchedCost = function (costs) {
 //   }
 // };
 
-console.log(twoCitySchedCost([[10, 20], [30, 200], [400, 50], [30, 20]])); //110
+console.log(
+  twoCitySchedCost([
+    [10, 20],
+    [30, 200],
+    [400, 50],
+    [30, 20],
+  ])
+); // 110
