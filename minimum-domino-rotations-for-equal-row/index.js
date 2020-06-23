@@ -3,7 +3,7 @@
  * @param {number[]} B
  * @return {number}
  */
-var minDominoRotations = function (A, B) {
+const minDominoRotations = function (A, B) {
   const steps = Math.min(
     match(A[0], A, B),
     match(B[0], A, B),
@@ -11,7 +11,7 @@ var minDominoRotations = function (A, B) {
     match(B[0], B, A)
   );
 
-  return (steps === (A.length + 1)) ? -1 : steps;
+  return steps === A.length + 1 ? -1 : steps;
 };
 
 const match = (desired, A, B) => {
@@ -29,7 +29,7 @@ const match = (desired, A, B) => {
   }
 
   return steps;
-}
+};
 
 console.log(minDominoRotations([1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1]));
 console.log(minDominoRotations([2, 1, 2, 4, 2, 2], [5, 2, 6, 2, 3, 2]));

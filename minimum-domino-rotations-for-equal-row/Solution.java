@@ -20,7 +20,7 @@ class Solution {
       if (A[i] == desired) {
         continue;
       }
-      
+
       if (B[i] != desired) {
         return A.length + 1;
       }
