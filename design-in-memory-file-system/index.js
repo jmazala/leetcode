@@ -10,6 +10,10 @@ File.prototype.addContent = function (contents) {
   this.contents += contents;
 };
 
+File.prototype.getName = function () {
+  return this.name;
+};
+
 const Folder = function (path) {
   this.path = path;
   this.fileMap = {};
@@ -56,7 +60,7 @@ Folder.prototype.getSubFolders = function () {
 
 const FileSystem = function () {
   this.fileMap = {};
-  this.folderMap = {};
+  this.folderMap = { '/': new Folder('/') };
   return this;
 };
 
@@ -85,15 +89,11 @@ FileSystem.prototype.ls = function (path) {
       output = output.concat(folder.getFiles());
       output = output.concat(folder.getSubFolders());
     } else {
-      output = [path];
+      output = [folder.getFile(finalSubPath).getName()];
     }
   }
 
   return output.sort();
-};
-
-FileSystem.prototype.createBaseDir = function () {
-  this.folderMap['/'] = this.folderMap['/'] || new Folder('/');
 };
 
 FileSystem.prototype.getBaseDir = function () {
@@ -106,15 +106,10 @@ FileSystem.prototype.getBaseDir = function () {
  */
 FileSystem.prototype.mkdir = function (path) {
   if (path === '/') {
-    this.createBaseDir();
     return;
   }
 
   const subPaths = path.split(SEPARATOR);
-  if (!this.getBaseDir()) {
-    this.createBaseDir();
-  }
-
   let folder = this.getBaseDir();
 
   for (let i = 1; i < subPaths.length; i++) {
@@ -179,7 +174,6 @@ FileSystem.prototype.getSubFolder = function (subPaths) {
  */
 
 const fs = new FileSystem();
-fs.mkdir('/');
 console.log(JSON.stringify(fs.ls('/'))); // []
 fs.mkdir('/a/b/c');
 fs.addContentToFile('/a/b/c/d', 'hello');
@@ -207,3 +201,14 @@ fs3.addContentToFile('/goowmfn/c', 'shetopcy');
 console.log(JSON.stringify(fs3.ls('/z'))); // []
 console.log(JSON.stringify(fs3.ls('/goowmfn/c'))); // ["c"]
 console.log(JSON.stringify(fs3.ls('/goowmfn'))); // ["c"]
+
+const fs4 = new FileSystem();
+console.log(JSON.stringify(fs4.ls('/')));
+console.log(JSON.stringify(fs4.ls('/')));
+console.log(JSON.stringify(fs4.ls('/')));
+console.log(JSON.stringify(fs4.ls('/')));
+console.log(JSON.stringify(fs4.ls('/')));
+fs4.addContentToFile('bne', 'kvo');
+console.log(fs4.readContentFromFile('/bne'));
+console.log(fs4.readContentFromFile('/bne'));
+console.log(JSON.stringify(fs4.ls('/')));
