@@ -1,35 +1,50 @@
 import java.util.PriorityQueue;
 
 class Solution {
-  public int lastStoneWeight(int[] stones) {
-    PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> {
-      return a - b;
-    });
+  // [2,7,4,1,8,1]
+  public static int lastStoneWeight(int[] stones) {
+    if (stones.length == 0) {
+      return 0;
+    }
+
+    if (stones.length == 1) {
+      return 1;
+    }
+
+    if (stones.length == 2) {
+      return Math.abs(stones[0] - stones[1]);
+    }
+
+    // put all the stones into a heap so we can grab the heaviest ones
+
+    PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
 
     for (int stone : stones) {
       maxHeap.add(stone);
     }
 
-    // Each turn, we choose the two heaviest rocks and smash them together.  Suppose the stones have weights x and y with x <= y.  The result of this smash is:
-    while (maxHeap.size() >= 2) {
-      int y = maxHeap.remove();
-      int x = maxHeap.remove();
+    // maxHeap: [1]
 
-      // If x == y, both stones are totally destroyed;
+    // while you can, choose the 2 heaviest stones and smash them together
+    while (maxHeap.size() >= 2) {
+      int y = maxHeap.remove(); // 1
+      int x = maxHeap.remove(); // 1
+
+      // if x === y destroy both
       if (x == y) {
         continue;
       }
 
-      // If x != y, the stone of weight x is totally destroyed, and the stone of weight y has new weight y-x.
-      y -= x;
-      maxHeap.add(y);
-    }
-    
-    // At the end, there is at most 1 stone left.  Return the weight of this stone (or 0 if there are no stones left.)
-    if (maxHeap.isEmpty()) {
-      return 0;
+      // if x != y put stone (y-x) back into the heap
+      maxHeap.add(y - x);
     }
 
-    return maxHeap.remove();
+    // if there's 1 stone left return it else 0
+    return maxHeap.isEmpty() ? 0 : maxHeap.peek();
+  }
+
+  public static void main(String[] args) {
+    System.out.println(Solution.lastStoneWeight(new int[] { 2, 7, 4, 1, 8, 1 })); // 1
+
   }
 }
