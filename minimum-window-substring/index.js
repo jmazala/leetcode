@@ -3,7 +3,7 @@
  * @param {string} t
  * @return {string}
  */
-var minWindow = function (s, t) {
+const minWindow = function (s, t) {
   if (s.length === 0 || t.length === 0 || s.length < t.length) {
     return '';
   }
@@ -32,12 +32,12 @@ var minWindow = function (s, t) {
     }
 
     while (left <= right && formed === required) {
-      //compare with answer.overwrite if it's smaller
-      if ((right - left) < (answer[1] - answer[0])) {
+      // compare with answer.overwrite if it's smaller
+      if (right - left < answer[1] - answer[0]) {
         answer = [left, right];
       }
 
-      //contract window
+      // contract window
       const charToAddBack = s[left];
       if (charToAddBack in tHash) {
         tHash[charToAddBack]++;
@@ -59,11 +59,11 @@ var minWindow = function (s, t) {
   return s.slice(answer[0], answer[1] + 1);
 };
 
-console.log(minWindow('ADOBECODEBANC', 'ABCF')); //''
-console.log(minWindow('ADOBECODEBANC', 'A')); //A
-console.log(minWindow('ADOBECODEBANC', 'ABC')); //BANC
-console.log(minWindow('ADOBECODEBANC', 'ADO')); //ADO
-console.log(minWindow('ADOBECODEBANC', 'ADOC')); //ADOBEC
-console.log(minWindow('ADOBECODEBANC', 'ECD')); //ECOD
-console.log(minWindow('ADOBECODEBANC', 'ACC')); //CODEBANC
-console.log(minWindow('ADOBECODEBANC', 'AACC')); //ADOBECODEBANC
+console.log(minWindow('ADOBECODEBANC', 'ABCF')); // ''
+console.log(minWindow('ADOBECODEBANC', 'A')); // A
+console.log(minWindow('ADOBECODEBANC', 'ABC')); // BANC
+console.log(minWindow('ADOBECODEBANC', 'ADO')); // ADO
+console.log(minWindow('ADOBECODEBANC', 'ADOC')); // ADOBEC
+console.log(minWindow('ADOBECODEBANC', 'ECD')); // ECOD
+console.log(minWindow('ADOBECODEBANC', 'ACC')); // CODEBANC
+console.log(minWindow('ADOBECODEBANC', 'AACC')); // ADOBECODEBANC

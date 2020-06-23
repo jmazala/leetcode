@@ -15,7 +15,7 @@ const { TreeNode } = require('../js-includes');
  * @param {number[]} preorder
  * @return {TreeNode}
  */
-var bstFromPreorder = function (preorder) {
+const bstFromPreorder = function (preorder) {
   if (!preorder.length) {
     return null;
   }
@@ -23,8 +23,8 @@ var bstFromPreorder = function (preorder) {
   const root = new TreeNode(preorder[0]);
   let i = 1;
 
-  //locate where the right subtree begins
-  //it's the first value greater than the root
+  // locate where the right subtree begins
+  // it's the first value greater than the root
   while (i < preorder.length && preorder[i] < root.val) {
     i++;
   }
@@ -36,6 +36,6 @@ var bstFromPreorder = function (preorder) {
 
 //   8
 // 5   10
-//1 7    12
+// 1 7    12
 
 console.log(bstFromPreorder([8, 5, 1, 7, 10, 12]));
