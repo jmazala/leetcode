@@ -2,23 +2,26 @@
  * @param {string} s
  * @return {number}
  */
-var firstUniqChar = function (s) {
-  const letters = {};
+const firstUniqChar = function (s) {
+  const map = new Map(); // to preserve insertion order
 
   for (let i = 0; i < s.length; i++) {
-    const c = s[i];
-    if (c in letters) {
-      letters[c] = -1;
+    const char = s[i];
+    if (!map.has(char)) {
+      map.set(char, i);
     } else {
-      letters[c] = i;
+      map.set(char, false); // might as well just use false
     }
   }
 
-  for (let i = 0; i < s.length; i++) {
-    if (letters[s[i]] !== -1) {
-      return i;
+  for (const value of map.values()) {
+    if (value !== false) {
+      return value;
     }
   }
 
   return -1;
 };
+
+console.log(firstUniqChar('leetcode')); // 0
+console.log(firstUniqChar('loveleetcode')); // 2
