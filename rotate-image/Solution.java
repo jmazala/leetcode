@@ -2,14 +2,14 @@ import java.util.Arrays;
 
 class Solution {
   public static void rotate(int[][] matrix) {
-    int N = matrix.length;
-    if (N == 0) {
+    int n = matrix.length;
+    if (n == 0) {
       return;
     }
 
     // transpose the array. horizontal becomes vertical
-    for (int i = 0; i < N; i++) {
-      for (int j = i; j < N; j++) {
+    for (int i = 0; i < n; i++) {
+      for (int j = i; j < n; j++) {
         int temp = matrix[i][j];
         matrix[i][j] = matrix[j][i];
         matrix[j][i] = temp;
@@ -17,11 +17,11 @@ class Solution {
     }
 
     // then flip it horizontally
-    for (int i = 0; i < N; i++) {
-      for (int j = 0; j < N / 2; j++) {
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n / 2; j++) {
         int temp = matrix[i][j];
-        matrix[i][j] = matrix[i][N - 1 - j];
-        matrix[i][N - 1 - j] = temp;
+        matrix[i][j] = matrix[i][n - 1 - j];
+        matrix[i][n - 1 - j] = temp;
       }
     }
   }
