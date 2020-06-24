@@ -1,31 +1,43 @@
 /**
- * @param {string} S
- * @param {string} T
+ * @param {string} s
+ * @param {string} t
  * @return {string}
  */
-const minWindow = function (S, T) {
-  const dp = Array(T.length + 1)
-    .fill()
-    .map(() => Array(S.length + 1).fill(0));
-  const answer = [Infinity, -Infinity];
+const minWindow = function (s, t) {
+  let answer = '';
+  let min = s.length + 1; // could be max int but it's fine like so
+  let tPos = 0;
 
-  for (let i = 1; i <= T.length; i++) {
-    for (let j = 1; j <= S.length; j++) {
-      if (T[i - 1] === S[j - 1]) {
-        dp[i][j] = dp[i - 1][j - 1] + 1;
-        answer[0] = Math.min(answer[0], j - 1);
-        answer[1] = Math.max(answer[1], dp[i][j]);
+  // iterate through all possible characters in s
+  for (let sPos = 0; sPos < s.length; sPos++) {
+    if (s[sPos] === t[tPos]) {
+      tPos++;
 
-        if (answer[1] - answer[0] === T.length - 1) {
-          return S.substring(answer[0], answer[0] + T.length + 1);
+      if (tPos === t.length) {
+        // we found a potential subsequence end.  work backwards
+        const end = sPos + 1;
+        tPos--;
+
+        while (tPos >= 0) {
+          if (s[sPos] === t[tPos]) {
+            tPos--;
+          }
+
+          sPos--;
         }
-      } else {
-        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+
+        sPos++;
+        tPos++;
+
+        if (end - sPos < min) {
+          min = end - sPos;
+          answer = s.substring(sPos, end);
+        }
       }
     }
   }
 
-  return '';
+  return answer;
 };
 
-console.log(minWindow('abcdebdde', 'bde'));
+console.log(minWindow('abcdebdde', 'bde')); // bcde
