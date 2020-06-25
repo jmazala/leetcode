@@ -1,20 +1,45 @@
 class Solution(object):
     def minWindow(self, S, T):
-        N = len(S)
-        nxt = [None] * N
-        last = [-1] * 26
-        for i in xrange(N-1, -1, -1):
-            last[ord(S[i]) - ord('a')] = i
-            nxt[i] = tuple(last)
+        tPos = 0
+        sPos = 0
+        answer = ''
+        minWindowSize = float("inf")
 
-        windows = [[i, i] for i, c in enumerate(S) if c == T[0]]
-        for j in xrange(1, len(T)):
-            letter_index = ord(T[j]) - ord('a')
-            windows = [[root, nxt[i+1][letter_index]]
-                       for root, i in windows
-                       if 0 <= i < N-1 and nxt[i+1][letter_index] >= 0]
+        # for each position in s try to start or continue a window
+        while sPos < len(S):
+            # as the chars match increment t pointer
+            if S[sPos] == T[tPos]:
+                tPos += 1
 
-        if not windows:
-            return ""
-        i, j = min(windows, key=lambda (i, j): j-i)
-        return S[i: j+1]
+                # if we've exhausted t, that means we found a good candidate for a subsequence
+                # but it could be shorter
+                if tPos == len(T):
+                    # go backwards from that t position to find the shortest subsequence window and overwrite
+                    end = sPos + 1
+                    tPos -= 1
+
+                    while (tPos >= 0):
+                        if S[sPos] == T[tPos]:
+                            tPos -= 1
+
+                        sPos -= 1
+
+                    #j is at -1
+                    tPos += 1
+                    # i is one before the first char
+                    sPos += 1
+
+                    # we're guaranteed t to go forwards and backwards so we don't need to reset anything else
+
+                    # see if our window is best
+                    if (end - sPos) < minWindowSize:
+                        minWindowSize = end - sPos
+                        answer = S[sPos:end]
+            sPos += 1
+
+        return answer
+
+
+s = Solution()
+# print(s.minWindow('abcdebdde', 'bde'))  # bcde
+print(s.minWindow("ffynmlzesdshlvugsigobutgaetsnjlizvqjdpccdylclqcbghhixpjihximvhapymfkjxyyxfwvsfyctmhwmfjyjidnfryiyajmtakisaxwglwpqaxaicuprrvxybzdxunypzofhpclqiybgniqzsdeqwrdsfjyfkgmejxfqjkmukvgygafwokeoeglanevavyrpduigitmrimtaslzboauwbluvlfqquocxrzrbvvplsivujojscytmeyjolvvyzwizpuhejsdzkfwgqdbwinkxqypaphktonqwwanapouqyjdbptqfowhemsnsl", "ntimcimzah"))
