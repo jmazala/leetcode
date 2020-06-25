@@ -2,7 +2,6 @@ node_modules
 */*.class
 
 #unsolved problems. meh
-find-the-duplicate-number
 flatten-nested-list-iterator
 odd-even-linked-list
 remove-duplicates-from-sorted-array
