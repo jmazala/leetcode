@@ -2,9 +2,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 class Solution {
-  final static char WATER = '0';
-  final static char LAND = '1';
-  final static int[][] DIRECTIONS = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+  private static final char WATER = '0';
+  private static final char LAND = '1';
+  private static final int[][] DIRECTIONS = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
   int numIslands = 0;
   int M;
   int N;
