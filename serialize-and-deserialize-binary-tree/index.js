@@ -14,10 +14,10 @@ const { TreeNode } = require('../js-includes');
  * @param {TreeNode} root
  * @return {string}
  */
-var serialize = function (root) {
+const serialize = function (root) {
   const serialized = [];
 
-  //use preorder traversel - node, left, right
+  // use preorder traversel - node, left, right
   const stack = [root];
 
   while (stack.length) {
@@ -40,7 +40,7 @@ var serialize = function (root) {
  * @param {string} data
  * @return {TreeNode}
  */
-var deserialize = function (data) {
+const deserialize = function (data) {
   const deserialized = JSON.parse(data);
   return helper(deserialized);
 
