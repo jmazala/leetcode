@@ -1,6 +1,6 @@
 // (i,j)=(P(i+1,j−1) and S i==S j
 
-//DYNAMIC PROGRAMMING
+// DYNAMIC PROGRAMMING
 // var longestPalindrome = function (s) {
 //   if (s.length < 2) {
 //     return s;
@@ -34,7 +34,7 @@
 //       if (j >= s.length) {
 //         break;
 //       }
-      
+
 //       if (dp[i + 1][j - 1] && s[i] === s[j]) {
 //         dp[i][j] = true;
 
@@ -49,8 +49,8 @@
 //   return s.slice(start, end + 1);
 // }
 
-//EXPAND AROUND CENTER
-var longestPalindrome = function (s) {
+// EXPAND AROUND CENTER
+const longestPalindrome = function (s) {
   if (s.length < 2) {
     return s;
   }
@@ -59,17 +59,17 @@ var longestPalindrome = function (s) {
   let end = 0;
 
   for (let i = 0; i < s.length; i++) {
-    //a palindrome at position i can be made with s[i] as the center 
+    // a palindrome at position i can be made with s[i] as the center
     const [left1, right1] = expandAroundCenter(i, i);
-    //or s[i] + s[i+1] as the center
+    // or s[i] + s[i+1] as the center
     const [left2, right2] = expandAroundCenter(i, i + 1);
-    
-    if ((right1 - left1) > (end - start)) {
+
+    if (right1 - left1 > end - start) {
       end = right1;
       start = left1;
     }
 
-    if ((right2 - left2) > (end - start)) {
+    if (right2 - left2 > end - start) {
       end = right2;
       start = left2;
     }
@@ -88,12 +88,12 @@ var longestPalindrome = function (s) {
 };
 
 console.log(longestPalindrome('')); //
-console.log(longestPalindrome('a')); //a
-console.log(longestPalindrome('bb')); //bb
-console.log(longestPalindrome('abb')); //bb
-console.log(longestPalindrome('bba')); //bb
-console.log(longestPalindrome('jabacddcf')); //cddc
-console.log(longestPalindrome('jabaeeeeecddc')); //eeeee
-console.log(longestPalindrome('jabafcddcf')); //fcddcf
-console.log(longestPalindrome('jabaeeeeefcddcf')); //fcddcf
-console.log(longestPalindrome('gggggggjabaeeeeefcddcf')); //ggggggg
+console.log(longestPalindrome('a')); // a
+console.log(longestPalindrome('bb')); // bb
+console.log(longestPalindrome('abb')); // bb
+console.log(longestPalindrome('bba')); // bb
+console.log(longestPalindrome('jabacddcf')); // cddc
+console.log(longestPalindrome('jabaeeeeecddc')); // eeeee
+console.log(longestPalindrome('jabafcddcf')); // fcddcf
+console.log(longestPalindrome('jabaeeeeefcddcf')); // fcddcf
+console.log(longestPalindrome('gggggggjabaeeeeefcddcf')); // ggggggg
