@@ -1,3 +1,5 @@
+const { ListNode } = require('../js-includes');
+
 /**
  * Definition for singly-linked list.
  * function ListNode(val) {
@@ -10,12 +12,12 @@
  * @param {ListNode} l2
  * @return {ListNode}
  */
-var mergeTwoLists = function (l1, l2) {
+const mergeTwoLists = function (l1, l2) {
   if (!l1 && !l2) {
     return null;
   }
 
-  let head = new ListNode();
+  const head = new ListNode();
   let temp = head;
 
   while (l1 || l2) {
@@ -83,5 +85,4 @@ var mergeTwoLists = function (l1, l2) {
   //     }
 
   //     return answer;
-
 };

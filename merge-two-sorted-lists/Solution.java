@@ -5,7 +5,7 @@
  */
 class Solution {
 
-  //ITERATIVE ALGORITHM
+  // ITERATIVE ALGORITHM
   public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
     ListNode dummyHead = new ListNode();
     ListNode tail = dummyHead;
@@ -28,38 +28,38 @@ class Solution {
         tail.next = l2;
         l2 = l2.next;
       }
-      
+
       tail = tail.next;
     }
 
     return dummyHead.next;
   }
 
-  //MERGESORT ALGORITHM
+  // MERGESORT ALGORITHM
   // public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-  //   if (l1 == null && l2 == null) {
-  //     return null;
-  //   }
+  // if (l1 == null && l2 == null) {
+  // return null;
+  // }
 
-  //   if (l1 == null) {
-  //     return l2;
-  //   }
+  // if (l1 == null) {
+  // return l2;
+  // }
 
-  //   if (l2 == null) {
-  //     return l1;
-  //   }
+  // if (l2 == null) {
+  // return l1;
+  // }
 
-  //   ListNode result = null;
+  // ListNode result = null;
 
-  //   if (l1.val <= l2.val) {
-  //     result = l1;
-  //     result.next = mergeTwoLists(l1.next, l2);
-  //   } else {
-  //     result = l2;
-  //     result.next = mergeTwoLists(l1, l2.next);
-  //   }
+  // if (l1.val <= l2.val) {
+  // result = l1;
+  // result.next = mergeTwoLists(l1.next, l2);
+  // } else {
+  // result = l2;
+  // result.next = mergeTwoLists(l1, l2.next);
+  // }
 
-  //   return result;
+  // return result;
   // }
 
   public static void main(String[] args) {
