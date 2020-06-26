@@ -5,7 +5,7 @@ const OFFSET = '0'.charCodeAt(0);
  * @param {string} num2
  * @return {string}
  */
-var multiply = function (num1, num2) {
+const multiply = function (num1, num2) {
   if (num1 === '0' || num2 === '0') {
     return '0';
   }
@@ -22,7 +22,7 @@ var multiply = function (num1, num2) {
   let answer = 0;
   let tens = 0;
 
-  //12 * 25 = (12 * 5) + (12 * 20)
+  // 12 * 25 = (12 * 5) + (12 * 20)
   while (num2 > 0) {
     const digit = num2 % 10;
     num2 = Math.floor(num2 / 10);
@@ -32,7 +32,7 @@ var multiply = function (num1, num2) {
   return convertToString(answer);
 };
 
-//since we can't use parseInt?
+// since we can't use parseInt?
 function convertToNumber(n) {
   let answer = 0;
   let tens = 0;
@@ -45,9 +45,9 @@ function convertToNumber(n) {
   return answer;
 }
 
-//since we can't use toString?
+// since we can't use toString?
 function convertToString(n) {
-  let answer = [];
+  const answer = [];
 
   while (n > 0) {
     answer.unshift(n % 10);
@@ -57,6 +57,6 @@ function convertToString(n) {
   return answer.join('');
 }
 
-console.log(multiply('2', '3')); //6
-console.log(multiply('123', '456')); //56088
-console.log(multiply('123456789', '987654321')); //"121932631112635269"
+console.log(multiply('2', '3')); // 6
+console.log(multiply('123', '456')); // 56088
+console.log(multiply('123456789', '987654321')); // "121932631112635269"

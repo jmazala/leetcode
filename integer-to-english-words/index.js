@@ -28,16 +28,16 @@ const HASH = {
   30: 'Thirty',
   40: 'Forty',
   50: 'Fifty',
-  80: 'Eighty'
+  80: 'Eighty',
 };
 
-var numberToWords = function (num) {
-  //single digit is straight forward
+const numberToWords = function (num) {
+  // single digit is straight forward
   if (num in HASH) {
     return HASH[num];
   }
 
-  //double digits has edge cases
+  // double digits has edge cases
   if (num < 100) {
     if (num % 10 === 0) {
       return [HASH[num / 10], 'ty'].join('');
@@ -53,7 +53,7 @@ var numberToWords = function (num) {
     return result.join(' ');
   }
 
-  //triple digits is first digit + hundred + the 2 digit number
+  // triple digits is first digit + hundred + the 2 digit number
   if (num < 1000) {
     const hundreds = Math.floor(num / 100);
     const remainder = num % 100;
@@ -64,7 +64,7 @@ var numberToWords = function (num) {
     return result.join(' ');
   }
 
-  //four to six digits is first (up to) 3 digits + thousands + the 3 digit number
+  // four to six digits is first (up to) 3 digits + thousands + the 3 digit number
   if (num < 1000000) {
     const thousands = Math.floor(num / 1000);
     const remainder = num % 1000;
@@ -83,7 +83,7 @@ var numberToWords = function (num) {
 
     const result = [numberToWords(millions), 'Million'];
     if (remainder > 0) {
-      result.push(numberToWords(remainder))
+      result.push(numberToWords(remainder));
     }
 
     return result.join(' ');
@@ -95,7 +95,7 @@ var numberToWords = function (num) {
 
     const result = [numberToWords(billions), 'Billion'];
     if (remainder > 0) {
-      result.push(numberToWords(remainder))
+      result.push(numberToWords(remainder));
     }
 
     return result.join(' ');

@@ -3,8 +3,8 @@
  * @return {string[][]}
  */
 
-//USING A HASH OF CHAR COUNTS
-var groupAnagrams = function (strs) {
+// USING A HASH OF CHAR COUNTS
+const groupAnagrams = function (strs) {
   const OFFSET = 'a'.charCodeAt(0);
   const DELIMITER = ',';
   const hash = {};
@@ -25,9 +25,9 @@ var groupAnagrams = function (strs) {
 
     return a.join(DELIMITER);
   }
-}
+};
 
-//USING A HASH OF SORTED STRINGS
+// USING A HASH OF SORTED STRINGS
 // var groupAnagrams = function (strs) {
 //   const hash = {};
 //   for (const s of strs) {
@@ -39,4 +39,6 @@ var groupAnagrams = function (strs) {
 //   return Object.values(hash);
 // };
 
-console.log(JSON.stringify(groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]))); //[["eat","tea","ate"],["tan","nat"],["bat"]]
+console.log(
+  JSON.stringify(groupAnagrams(['eat', 'tea', 'tan', 'ate', 'nat', 'bat']))
+); // [["eat","tea","ate"],["tan","nat"],["bat"]]
