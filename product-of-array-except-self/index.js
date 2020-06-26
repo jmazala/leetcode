@@ -2,15 +2,15 @@
  * @param {number[]} nums
  * @return {number[]}
  */
-var productExceptSelf = function (nums) {
+const productExceptSelf = function (nums) {
   const answer = Array(nums.length).fill(1);
   const left = Array(nums.length).fill(1);
   const right = Array(nums.length).fill(1);
 
-  //answer[0] = nums[1] * nums[2] * nums[3]
-  //answer[1] = nums[0] * nums[2] * nums[3]
-  //answer[2] = nums[0] * nums[1] * nums[3]
-  //answer[3] = nums[0] * nums[1] * nums[2]
+  // answer[0] = nums[1] * nums[2] * nums[3]
+  // answer[1] = nums[0] * nums[2] * nums[3]
+  // answer[2] = nums[0] * nums[1] * nums[3]
+  // answer[3] = nums[0] * nums[1] * nums[2]
 
   for (let i = 1; i < nums.length; i++) {
     left[i] = left[i - 1] * nums[i - 1];
