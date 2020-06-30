@@ -1,7 +1,11 @@
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 class Solution {
-  final static int[][] DIRECTIONS = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+  private static final int[][] DIRECTIONS = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+  static final char PLACEHOLDER = '!';
 
   public List<String> findWords(char[][] board, String[] words) {
     List<String> answer = new LinkedList<>();
@@ -9,8 +13,13 @@ class Solution {
       return answer;
     }
 
-    // build a tree out of the words array to help us navigate the word search
+    // build a trie out of the words array to help us navigate the word search
     TrieNode trie = buildTree(words);
+    int longestWordLength = 0;
+    for (String word : words) {
+      longestWordLength = Math.max(longestWordLength, word.length());
+    }
+
     Set<String> found = new HashSet<>();
 
     // for every char in the board, see if we can start a word from there
@@ -19,7 +28,7 @@ class Solution {
         char c = board[i][j];
         if (trie.children.containsKey(c)) {
           // if we can start a word from there, dfs the array with the help of the trie
-          dfs(board, c, i, j, new StringBuilder(), trie.children.get(c), found);
+          dfs(board, longestWordLength, c, i, j, new StringBuilder(), trie.children.get(c), found);
         }
       }
     }
@@ -28,26 +37,30 @@ class Solution {
     return answer;
   }
 
-  public void dfs(char[][] board, char current, int i, int j, StringBuilder builder, TrieNode node, Set<String> found) {
+  public void dfs(char[][] board, int longestWordLength, char current, int i, int j, StringBuilder builder,
+      TrieNode node, Set<String> found) {
     builder.append(current);
-    board[i][j] = '!'; // temp placeholder so we don't visit the same node twice
+    board[i][j] = PLACEHOLDER; // temp placeholder so we don't visit the same node twice
 
     if (node.isWord) {
       found.add(builder.toString());
       // don't return here as a word could be a prefix of another word
     }
 
-    for (int[] direction : DIRECTIONS) {
-      int nextI = i + direction[0];
-      int nextJ = j + direction[1];
-      if (nextI < 0 || nextI >= board.length || nextJ < 0 || nextJ >= board[0].length) {
-        continue;
-      }
+    if (builder.length() < longestWordLength) {
+      for (int[] direction : DIRECTIONS) {
+        int nextI = i + direction[0];
+        int nextJ = j + direction[1];
 
-      char nextChar = board[nextI][nextJ];
-      TrieNode nextNode = node.children.get(nextChar);
-      if (nextNode != null) {
-        dfs(board, nextChar, nextI, nextJ, builder, nextNode, found);
+        if (nextI < 0 || nextI >= board.length || nextJ < 0 || nextJ >= board[0].length) {
+          continue;
+        }
+
+        char nextChar = board[nextI][nextJ];
+        TrieNode nextNode = node.children.get(nextChar);
+        if (nextNode != null) {
+          dfs(board, longestWordLength, nextChar, nextI, nextJ, builder, nextNode, found);
+        }
       }
     }
 
@@ -69,10 +82,10 @@ class Solution {
     Solution s = new Solution();
     char[][] board = { { 'o', 'a', 'a', 'n' }, { 'e', 't', 'a', 'e' }, { 'i', 'h', 'k', 'r' }, { 'i', 'f', 'l', 'v' } };
     String[] words = { "oath", "pea", "eat", "rain" };
-    System.out.println(s.findWords(board, words));
+    System.out.println(s.findWords(board, words)); // [oath, eat]
 
     char[][] board2 = { { 'a', 'b' }, { 'c', 'd' } };
     String[] words2 = { "ab", "cb", "ad", "bd", "ac", "ca", "da", "bc", "db", "adcb", "dabc", "abb", "acb" };
-    System.out.println(s.findWords(board2, words2));
+    System.out.println(s.findWords(board2, words2)); // [ab, ac, bd, ca, db]
   }
 }

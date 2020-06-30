@@ -7,13 +7,18 @@ function TrieNode(char, children) {
   return this;
 }
 
-const DIRECTIONS = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+const DIRECTIONS = [
+  [-1, 0],
+  [1, 0],
+  [0, -1],
+  [0, 1],
+];
 /**
  * @param {character[][]} board
  * @param {string[]} words
  * @return {string[]}
  */
-var findWords = function (board, words) {
+const findWords = function (board, words) {
   if (!board || !board.length) {
     return [];
   }
@@ -22,10 +27,10 @@ var findWords = function (board, words) {
   const charToNodeHash = {};
   const M = board.length;
   const N = board[0].length;
-  const trieNodes = []; //2d array but same as a hash
+  const trieNodes = []; // 2d array but same as a hash
 
-  //O(M * N)
-  //create a TrieNode for every char in the word search
+  // O(M * N)
+  // create a TrieNode for every char in the word search
   for (let i = 0; i < M; i++) {
     if (!trieNodes[i]) {
       trieNodes[i] = [];
@@ -41,13 +46,13 @@ var findWords = function (board, words) {
     }
   }
 
-  //we can traverse the weard search and build the trie node edges
-  //O(N * M)
+  // we can traverse the weard search and build the trie node edges
+  // O(N * M)
   for (let i = 0; i < M; i++) {
     for (let j = 0; j < N; j++) {
       const node = trieNodes[i][j];
 
-      DIRECTIONS.forEach(direction => {
+      DIRECTIONS.forEach((direction) => {
         const nextI = i + direction[0];
         const nextJ = j + direction[1];
 
@@ -65,17 +70,21 @@ var findWords = function (board, words) {
     }
   }
 
-  //ok now the trie is built.  we can DFS for each word and try and see if the trie supports it
-  //this will be inefficient if some words are prefixes of other words
-  //O(w) where w is the number of words
-  return words.filter(word => {
-    //find trie nodes matching the first character in searched for word
-    let startingTrieNodes = charToNodeHash[word[0]] || [];
+  // ok now the trie is built.  we can DFS for each word and try and see if the trie supports it
+  // this will be inefficient if some words are prefixes of other words
+  // O(w) where w is the number of words
+  return words.filter((word) => {
+    // find trie nodes matching the first character in searched for word
+    const startingTrieNodes = charToNodeHash[word[0]] || [];
 
-    for (let startIndex = 0; startIndex < startingTrieNodes.length; startIndex++) {
-      let startNode = startingTrieNodes[startIndex];
+    for (
+      let startIndex = 0;
+      startIndex < startingTrieNodes.length;
+      startIndex++
+    ) {
+      const startNode = startingTrieNodes[startIndex];
 
-      //O(log(w))
+      // O(log(w))
       if (dfsTrie(startNode, word, 0, new Set())) {
         return true;
       }
@@ -84,10 +93,10 @@ var findWords = function (board, words) {
     return false;
   });
 
-  //traverse the trie with DFS and remember where you've been
+  // traverse the trie with DFS and remember where you've been
   function dfsTrie(node, word, numCharsSeen, seen) {
     numCharsSeen++;
-    //if we've seen this node before we're in a cycle.  return false.
+    // if we've seen this node before we're in a cycle.  return false.
     if (seen.has(node.id)) {
       return false;
     }
@@ -97,8 +106,8 @@ var findWords = function (board, words) {
     }
 
     seen.add(node.id);
-    
-    //look for the next character by traversing the trie
+
+    // look for the next character by traversing the trie
     const nextChar = word[numCharsSeen];
     const nextChildren = node.children[nextChar] || [];
 
@@ -129,14 +138,45 @@ var findWords = function (board, words) {
 // console.log(findWords(board2, words2)); //[]
 
 const board3 = [
-  ["b", "a", "a", "b", "a", "b"],
-  ["a", "b", "a", "a", "a", "a"],
-  ["a", "b", "a", "a", "a", "b"],
-  ["a", "b", "a", "b", "b", "a"],
-  ["a", "a", "b", "b", "a", "b"],
-  ["a", "a", "b", "b", "b", "a"],
-  ["a", "a", "b", "a", "a", "b"]
+  ['b', 'a', 'a', 'b', 'a', 'b'],
+  ['a', 'b', 'a', 'a', 'a', 'a'],
+  ['a', 'b', 'a', 'a', 'a', 'b'],
+  ['a', 'b', 'a', 'b', 'b', 'a'],
+  ['a', 'a', 'b', 'b', 'a', 'b'],
+  ['a', 'a', 'b', 'b', 'b', 'a'],
+  ['a', 'a', 'b', 'a', 'a', 'b'],
 ];
 
-const words3 = ["bbaabaabaaaaabaababaaaaababb", "aabbaaabaaabaabaaaaaabbaaaba", "babaababbbbbbbaabaababaabaaa", "bbbaaabaabbaaababababbbbbaaa", "babbabbbbaabbabaaaaaabbbaaab", "bbbababbbbbbbababbabbbbbabaa", "babababbababaabbbbabbbbabbba", "abbbbbbaabaaabaaababaabbabba", "aabaabababbbbbbababbbababbaa", "aabbbbabbaababaaaabababbaaba", "ababaababaaabbabbaabbaabbaba", "abaabbbaaaaababbbaaaaabbbaab", "aabbabaabaabbabababaaabbbaab", "baaabaaaabbabaaabaabababaaaa", "aaabbabaaaababbabbaabbaabbaa", "aaabaaaaabaabbabaabbbbaabaaa", "abbaabbaaaabbaababababbaabbb", "baabaababbbbaaaabaaabbababbb", "aabaababbaababbaaabaabababab", "abbaaabbaabaabaabbbbaabbbbbb", "aaababaabbaaabbbaaabbabbabab", "bbababbbabbbbabbbbabbbbbabaa", "abbbaabbbaaababbbababbababba", "bbbbbbbabbbababbabaabababaab", "aaaababaabbbbabaaaaabaaaaabb", "bbaaabbbbabbaaabbaabbabbaaba", "aabaabbbbaabaabbabaabababaaa", "abbababbbaababaabbababababbb", "aabbbabbaaaababbbbabbababbbb", "babbbaabababbbbbbbbbaabbabaa"];
-console.log(findWords(board3, words3)); //["aabbbbabbaababaaaabababbaaba","abaabbbaaaaababbbaaaaabbbaab","ababaababaaabbabbaabbaabbaba"]
+const words3 = [
+  'bbaabaabaaaaabaababaaaaababb',
+  'aabbaaabaaabaabaaaaaabbaaaba',
+  'babaababbbbbbbaabaababaabaaa',
+  'bbbaaabaabbaaababababbbbbaaa',
+  'babbabbbbaabbabaaaaaabbbaaab',
+  'bbbababbbbbbbababbabbbbbabaa',
+  'babababbababaabbbbabbbbabbba',
+  'abbbbbbaabaaabaaababaabbabba',
+  'aabaabababbbbbbababbbababbaa',
+  'aabbbbabbaababaaaabababbaaba',
+  'ababaababaaabbabbaabbaabbaba',
+  'abaabbbaaaaababbbaaaaabbbaab',
+  'aabbabaabaabbabababaaabbbaab',
+  'baaabaaaabbabaaabaabababaaaa',
+  'aaabbabaaaababbabbaabbaabbaa',
+  'aaabaaaaabaabbabaabbbbaabaaa',
+  'abbaabbaaaabbaababababbaabbb',
+  'baabaababbbbaaaabaaabbababbb',
+  'aabaababbaababbaaabaabababab',
+  'abbaaabbaabaabaabbbbaabbbbbb',
+  'aaababaabbaaabbbaaabbabbabab',
+  'bbababbbabbbbabbbbabbbbbabaa',
+  'abbbaabbbaaababbbababbababba',
+  'bbbbbbbabbbababbabaabababaab',
+  'aaaababaabbbbabaaaaabaaaaabb',
+  'bbaaabbbbabbaaabbaabbabbaaba',
+  'aabaabbbbaabaabbabaabababaaa',
+  'abbababbbaababaabbababababbb',
+  'aabbbabbaaaababbbbabbababbbb',
+  'babbbaabababbbbbbbbbaabbabaa',
+];
+console.log(findWords(board3, words3)); // ["aabbbbabbaababaaaabababbaaba","abaabbbaaaaababbbaaaaabbbaab","ababaababaaabbabbaabbaabbaba"]
