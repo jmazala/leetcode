@@ -1,6 +1,8 @@
+package utils.algoexpert;
+
 public abstract class Relation {
   public boolean knows(int a, int b) {
-    //dummy
+    // dummy
     return a != b;
   }
 }

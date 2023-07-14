@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +15,6 @@ import java.util.Set;
 class Solution {
   class QueueItem {
     String word;
-    int steps;
     Set<String> visited;
 
     public QueueItem(String word, Set<String> visited) {
@@ -47,7 +47,6 @@ class Solution {
 
   public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
     List<List<String>> answer = new ArrayList<>();
-    int shortestSequenceLength = Integer.MAX_VALUE;
     int length = beginWord.length();
     Map<String, List<String>> dictionary = preProcess(length, wordList);
 
@@ -57,50 +56,47 @@ class Solution {
     queue.add(new QueueItem(beginWord, beginSet));
 
     while (!queue.isEmpty()) {
-      QueueItem node = queue.remove();
-      String word = node.word;
-      Set<String> visited = node.visited;
+      int numNodes = queue.size();
 
-      if (visited.size() == shortestSequenceLength) {
-        continue; // no point in BFSing further
-      }
+      while (numNodes > 0) {
+        numNodes--;
+        QueueItem node = queue.remove();
+        String currentWord = node.word;
+        Set<String> visited = node.visited;
+        Set<String> nextWords = new HashSet<>();
 
-      for (int i = 0; i < length; i++) {
-        if (visited.size() == shortestSequenceLength) {
-          break; // no point in BFSing further
-        }
+        for (int i = 0; i < length; i++) {
+          String genericWord = currentWord.substring(0, i) + '*' + currentWord.substring(i + 1, length);
 
-        String newWord = word.substring(0, i) + '*' + word.substring(i + 1, length);
-
-        // Next states are all the words which share the same intermediate state.
-        for (String adjacentWord : dictionary.getOrDefault(newWord, new ArrayList<>())) {
-          if (visited.contains(adjacentWord)) {
-            continue;
-          }
-
-          // If at any point if we find what we are looking for
-          // i.e. the end word - we can return with the answer.
-          if (adjacentWord.equals(endWord)) {
-            visited.add(adjacentWord);
-
-            int sequenceLength = visited.size();
-            if (sequenceLength < shortestSequenceLength) {
-              shortestSequenceLength = sequenceLength;
-              answer = new ArrayList<>();
+          // Next states are all the words which share the same intermediate state.
+          for (String nextWord : dictionary.getOrDefault(genericWord, new ArrayList<>())) {
+            if (visited.contains(nextWord) || nextWords.contains(nextWord)) {
+              continue;
             }
 
-            List<String> sequence = new ArrayList<>();
-            sequence.addAll(visited);
-            answer.add(sequence);
-            break;
-          } else {
-            queue.add(new QueueItem(adjacentWord, visited));
+            nextWords.add(nextWord);
+
+            // If at any point if we find what we are looking for
+            // i.e. the end word - we can return with the answer.
+            if (nextWord.equals(endWord)) {
+              answer.add(new ArrayList<>(visited));
+              answer.get(answer.size() - 1).add(endWord);
+            } else {
+              // Otherwise, add it to the BFS Queue. Also mark it visited
+              Set<String> copy = new LinkedHashSet<String>(visited);
+              copy.add(nextWord);
+              queue.add(new QueueItem(nextWord, copy));
+            }
           }
         }
+      }
+
+      if (!answer.isEmpty()) {
+        return answer;
       }
     }
 
-    return answer;
+    return new ArrayList<>();
   }
 
   public static void main(String[] args) {

@@ -66,6 +66,7 @@ class Solution {
     while (!queue.isEmpty()) {
       steps++;
       int numNodes = queue.size();
+
       while (numNodes > 0) {
         String currentWord = queue.remove();
         numNodes--;

@@ -1,12 +1,34 @@
+package utils.algoexpert;
+
 public class ListNode {
-  Integer val;
-  ListNode next;
+  public Integer value;
+  public ListNode next;
 
   public ListNode() {
   }
 
   public ListNode(int x) {
-    val = x;
+    this.value = x;
+  }
+
+  public int length() {
+    ListNode temp = this;
+    int length = 0;
+    while (temp != null) {
+      length++;
+      temp = temp.next;
+    }
+
+    return length;
+  }
+
+  public ListNode lastNode() {
+    ListNode temp = this;
+    while (temp.next != null) {
+      temp = temp.next;
+    }
+
+    return temp;
   }
 
   /**
@@ -19,7 +41,7 @@ public class ListNode {
     ListNode temp = this;
 
     while (temp != null) {
-      builder.append(temp.val);
+      builder.append(temp.value);
       temp = temp.next;
       if (temp != null) {
         builder.append(" -> ");

@@ -3,7 +3,14 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Java",
+      "name": "Solution",
+      "request": "launch",
+      "mainClass": "Solution",
+      "projectName": "leetcode_ffe1d667"
+    },
+    {
+      "type": "java",
+      "name": "Solution",
       "request": "launch",
       "mainClass": "${file}"
     },
@@ -19,7 +26,9 @@
       "request": "launch",
       "name": "Node.js",
       "program": "${file}",
-      "skipFiles": ["<node_internals>/**"]
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
     }
   ]
 }
