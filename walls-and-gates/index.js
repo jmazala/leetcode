@@ -2,12 +2,8 @@
 
 const WALL = -1;
 const GATE = 0;
-const EMPTY = Math.pow(2, 31) - 1;
+const EMPTY = Infinity;
 const DIRECTIONS = [[-1, 0], [1, 0], [0, -1], [0, 1]];
-
-function getKey(i, j) {
-  return [i, j].join(',');
-}
 
 const wallsAndGates = rooms => {
   const m = rooms.length;
@@ -27,11 +23,21 @@ const wallsAndGates = rooms => {
 
   return rooms;
 
+  /*
+  DFS from each gate filling in steps at each spot
+  that isn't a gate, or a wall.  Also don't visit a spot again
+  if it took less steps to get there from a different gate
+  (rooms[i][j] < steps) satisfies all these requirements
+  because of how we initialized the constants above
+  This, most of the time, will use less memory than the BFS
+  solution but it's less efficient because we visit the same
+  empty spot multiple times, whereas BFS will find the shortest path
+  to it upon arrival.
+  */
   function dfs(i, j, steps) {
     if (
-      i < 0 || i >= m ||
-      j < 0 || j >= n ||
-      rooms[i][j] === WALL ||
+      i < 0 || i === m ||
+      j < 0 || j === n ||
       rooms[i][j] < steps
     ) {
       return;
@@ -45,6 +51,14 @@ const wallsAndGates = rooms => {
   }
 };
 
+/*
+BFS from each gate to find min number of steps required
+to hit an EMPTY spot.  Depending on how the walls and gates are arranged,
+this will likely use more memory (for the queue) than a DFS solution.
+Every time a branch forks, we add another element to the queue.
+For really big arrays this can grow to be quite large and we could run out of memory
+faster than DFS would through recursion stack.
+*/
 const wallsAndGatesBFS = (rooms) => {
   const m = rooms.length;
   if (!m) {
