@@ -1,3 +1,5 @@
+// https://leetcode.com/problems/walls-and-gates/
+
 const WALL = -1;
 const GATE = 0;
 const EMPTY = Math.pow(2, 31) - 1;
@@ -43,9 +45,53 @@ const wallsAndGates = rooms => {
   }
 };
 
-console.log(wallsAndGates([
+const wallsAndGatesBFS = (rooms) => {
+  const m = rooms.length;
+  if (!m) {
+    return;
+  }
+
+  const n = rooms[0].length;
+  const queue = [];
+
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (rooms[i][j] === GATE) {
+        queue.push([i, j, 0]);
+      }
+    }
+  }
+
+  while (queue.length) {
+    const [curI, curJ, curSteps] = queue.shift();
+
+    DIRECTIONS.forEach(direction => {
+      const nextI = curI + direction[0];
+      const nextJ = curJ + direction[1];
+
+      if (isEmpty(nextI, nextJ)) {
+        queue.push([nextI, nextJ, curSteps + 1]);
+        rooms[nextI][nextJ] = curSteps + 1;
+      }
+    });
+  }
+
+  return rooms;
+
+  function isEmpty(i, j) {
+    return i >= 0 && j >= 0 && i < m && j < n && rooms[i][j] === EMPTY;
+  }
+}
+
+/*
+[3, -1, 0, 1]
+[2, 2, 1, -1]
+[1, -1, 2, -1]
+[0, -1, 3, 4]
+*/
+console.log(JSON.stringify(wallsAndGates([
   [EMPTY, WALL, GATE, EMPTY],
   [EMPTY, EMPTY, EMPTY, WALL],
   [EMPTY, WALL, EMPTY, WALL],
   [GATE, WALL, EMPTY, EMPTY]
-]));
+])));
