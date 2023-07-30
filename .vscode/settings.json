@@ -1,3 +1,7 @@
 {
-  "java.checkstyle.configuration": "/google_checks.xml"
+  "java.checkstyle.configuration": "/google_checks.xml",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "python.formatting.provider": "none"
 }
