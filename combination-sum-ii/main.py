@@ -1,23 +1,43 @@
+# https://leetcode.com/problems/combination-sum-ii/
+
+from typing import List
+
+
 class Solution:
+    # TIME: O(2^N)
+    #   O (n log n) to sort
+    #   O(2^n) if we explore all combinations of the input array
+    #     2 options per iteration, take or do not take
+    # SPACE: O(combinations) + O(n)
+    #   O(n) for prefix
+    #   O(n) for recursion stack
+    #   O(combinations) for the result
     def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
-        def dfs(candidates, target, prefix=[]):
-            if target == 0:
-                result.add(tuple(prefix))
-                return
-
-            if target < 0 or len(candidates) == 0:
-                return
-
-            for i in range(len(candidates)):
-                if i > 0 and candidates[i] == candidates[i - 1]:
-                    continue
-
-                prefix.append(candidates[i])
-                dfs(candidates[i + 1 :], target - candidates[i], prefix)
-                prefix.pop()
-
+        self.combinations = []
         candidates.sort()
-        result = set()
-        dfs(candidates, target)
+        self.helper(candidates, target, 0, [])
+        return self.combinations
 
-        return [list(x) for x in result]
+    def helper(
+        self, candidates: List[int], remaining: int, i: int, prefix: List[int]
+    ) -> None:
+        if remaining == 0:
+            self.combinations.append(list(prefix))
+            return
+
+        for curI in range(i, len(candidates)):
+            # Only DFS duplicate numbers 1 time
+            if curI > i and candidates[curI] == candidates[curI - 1]:
+                continue
+
+            num = candidates[curI]
+            if remaining - num < 0:
+                break
+
+            prefix.append(num)
+            self.helper(candidates, remaining - num, curI + 1, prefix)
+            prefix.pop()
+
+
+s = Solution()
+print(s.combinationSum2(candidates=[10, 1, 2, 7, 6, 1, 5], target=8))
