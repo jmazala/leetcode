@@ -1,130 +1,170 @@
 # https://leetcode.com/problems/all-oone-data-structure/
 
+import collections
+
 
 class Node:
-    def __init__(self, s, count=0):
-        self.s = s
-        self.count = count
-        self.next = None
-        self.previous = None
-
-
-# All operations must be O(1)
-# This means we need a retrieval system based on key with O(1) - a hash
-# And we also need to keep track of the current min / max elements
-# We can't use a heap because that's not O(1).  But we can use a doubly linked list
-class AllOne:
     def __init__(self):
-        self.hash = {}
-        self.dummyHead = Node("", float("inf"))
-        self.dummyTail = Node("", float("-inf"))
-        self.dummyHead.next = self.dummyTail
-        self.dummyTail.previous = self.dummyHead
+        self.keys = set()
+        self.prev = None
+        self.next = None
 
-    def inc(self, key: str) -> None:
-        if key not in self.hash:
-            self.hash[key] = Node(key)
 
-        self.hash[key].count += 1
-        self.insertAtTail(key)
+class DoublyLinkedList:
+    def __init__(self):
+        self._head = Node()
+        self._tail = Node()
+        self._head.next = self._tail
+        self._tail.prev = self._head
 
-        while self.hash[key].count > self.hash[key].previous.count:
-            self.swap(self.hash[key], self.hash[key].previous)
+    def insertAtHead(self, nodeToInsert) -> None:
+        return self.insertAfter(nodeToInsert, self._head)
 
-    def insertAtHead(self, key):
-        self.hash[key].next = self.dummyHead.next
-        self.hash[key].next.previous = self.hash[key]
-        self.hash[key].previous = self.dummyHead
-        self.dummyHead.next = self.hash[key]
-        return
+    def insertAfter(self, nodeToInsert: Node, existingNode: Node) -> None:
+        nodeToInsert.next = existingNode.next
+        nodeToInsert.prev = existingNode
+        existingNode.next.prev = nodeToInsert
+        existingNode.next = nodeToInsert
 
-    def insertAtTail(self, key):
-        self.hash[key].previous = self.dummyTail.previous
-        self.hash[key].next = self.dummyTail
-        self.hash[key].previous.next = self.hash[key]
-        self.dummyTail.previous = self.hash[key]
+    def insertBefore(self, nodeToInsert: Node, existingNode: Node) -> None:
+        self.insertAfter(nodeToInsert, existingNode.prev)
 
-    def removeFromList(self, key):
-        self.hash[key].previous.next = self.hash[key].next
-        self.hash[key].next.previous = self.hash[key].previous
+    def remove(self, nodeToRemove: Node) -> None:
+        nodeToRemove.next.prev = nodeToRemove.prev
+        nodeToRemove.prev.next = nodeToRemove.next
 
-    def moveToFront(self, key):
-        self.removeFromList(key)
-        self.insertAtHead(key)
+    def getTail(self) -> Node:
+        return None if self._tail.prev == self._head else self._tail.prev
 
-    def moveToTail(self, key):
-        self.removeFromList(key)
-        self.insertAtTail(key)
-
-    def dec(self, key: str) -> None:
-        self.hash[key].count -= 1
-
-        if self.hash[key].count == 0:
-            self.removeFromList(key)
-            del self.hash[key]
-        # we only really need to swap if this should be the tail or be relieved of head
-        elif self.hash[key].count < self.dummyTail.previous.count:
-            self.moveToTail(key)
-        elif self.isHead(key) and self.hash[key].next.count > self.hash[key].count:
-            self.moveToFront(self.hash[key].next.s)
-
-    # return one key with max count else ""
-    def getMaxKey(self) -> str:
-        return self.dummyHead.next.s
-
-    # return one key with min count else ""
-    def getMinKey(self) -> str:
-        return self.dummyTail.previous.s
-
-    def isHead(self, key: str) -> bool:
-        return self.dummyHead.next == self.hash[key]
-
-    def isEmpty(self) -> bool:
-        return (
-            self.dummyHead.next == self.dummyTail
-            and self.dummyTail.previous == self.dummyHead
-        )
+    def getHead(self) -> Node:
+        return None if self._head.next == self._tail else self._head.next
 
     def toString(self) -> str:
         s = ""
-        node = self.dummyHead
+        node = self._head
         while node is not None:
-            s += f"{node.s}{node.count} <-> "
+            s += f"{node.keys} <-> "
             node = node.next
 
         return s[:-5]
 
 
+# All operations must be O(1)
+# This means we need a retrieval system based on key with O(1) - a hash
+# And we also need to keep track of the current min / max elements
+# We can't use a heap because that's not O(1)
+# But we can use a doubly linked list to keep track of min / max
+# So the data structure here is a doubly linked list where each node has a set of values
+# The hash table maps frequencies (int) to the list node containing the set of words
+# The other hash table maps the frequency to each key
+# After incrementing or decrementing, move the key to the proper set.
+# Once it's moved, check if the previous set it belonged to is empty.  If so, remove the node
+# TIME: O(1) for everything
+# SPACE: O(fn)
+#   O(fn) for the linked list where f is the number of distinct frequencies and n is the number of keys
+#   O(n) for keysToFreq hash
+#   O(f) for freqToNode hash
+
+
+class AllOne:
+    def __init__(self):
+        self.keysToFreq = collections.defaultdict(int)
+        self.linkedList = DoublyLinkedList()
+        self.freqToNode = {}
+        self.freqToNode[0] = self.linkedList._head
+
+    def inc(self, key: str) -> None:
+        self.keysToFreq[key] += 1
+        freq = self.keysToFreq[key]
+
+        if freq not in self.freqToNode:
+            self.freqToNode[freq] = Node()
+            self.linkedList.insertAfter(
+                existingNode=self.freqToNode[freq - 1],
+                nodeToInsert=self.freqToNode[freq],
+            )
+
+        node = self.freqToNode[freq]
+        node.keys.add(key)
+
+        if freq != 1:
+            prevNode = self.freqToNode[freq - 1]
+            prevNode.keys.remove(key)
+            if len(prevNode.keys) == 0:
+                self.linkedList.remove(prevNode)
+                del self.freqToNode[freq - 1]
+
+    def dec(self, key: str) -> None:
+        self.keysToFreq[key] -= 1
+        freq = self.keysToFreq[key]
+
+        if freq not in self.freqToNode:
+            self.freqToNode[freq] = Node()
+            self.linkedList.insertBefore(
+                existingNode=self.freqToNode[freq + 1],
+                nodeToInsert=self.freqToNode[freq],
+            )
+
+        node = self.freqToNode[freq]
+        node.keys.add(key)
+
+        prevNode = self.freqToNode[freq + 1]
+        prevNode.keys.remove(key)
+
+        if len(prevNode.keys) == 0:
+            self.linkedList.remove(prevNode)
+            del self.freqToNode[freq + 1]
+
+    def getMaxKey(self) -> str:
+        tail = self.linkedList.getTail()
+        if tail is None:
+            return ""
+
+        val = tail.keys.pop()
+        tail.keys.add(val)
+        return val
+
+    def getMinKey(self) -> str:
+        head = self.linkedList.getHead()
+        if head is None:
+            return ""
+
+        val = head.keys.pop()
+        head.keys.add(val)
+        return val
+
+
 # Your AllOne object will be instantiated and called as such:
-# allOne = AllOne()
-# allOne.inc("a")  # a1
-# allOne.inc("b")  # a1 b1
-# allOne.inc("c")  # a1 b1 c1
-# print(allOne.getMaxKey())  # "a"
-# print(allOne.getMinKey())  # "c"
-# allOne.inc("b")  # b2 a1 c1
-# print(allOne.getMaxKey())  # "b"
-# print(allOne.getMinKey())  # "c"
-# allOne.inc("a")  # b2 a2 c1
-# print(allOne.getMaxKey())  # "b"
-# allOne.inc("c")  # b2 a2 c2
-# print(allOne.getMaxKey())  # "b"
-# allOne.inc("c")  # c3 b2 a2
-# print(allOne.getMaxKey())  # "c"
-# print(allOne.getMinKey())  # "a"
-# allOne.inc("b")  # c3 b3 a2
-# print(allOne.getMaxKey())  # "c"
-# allOne.dec("c")  # b3 c2 a2
-# print(allOne.getMaxKey())  # "b"
-# allOne.dec("c")  # b2 a2 c1
-# print(allOne.getMaxKey())  # "b"
-# print(allOne.getMinKey())  # "c"
-# allOne.dec("a")  # b2 a1 c1
-# print(allOne.getMinKey())  # "c"
-# allOne.dec("a")  # b2 c1
-# print(allOne.getMinKey())  # "c"
-# allOne.dec("c")  # b2 c1
-# print(allOne.getMinKey())  # "b"
+allOne = AllOne()
+allOne.inc("a")  # a1
+allOne.inc("b")  # a1 b1
+allOne.inc("c")  # a1 b1 c1
+print(allOne.getMaxKey() in "abc")  # "a / b / c"
+print(allOne.getMinKey() in "abc")  # "a / b c"
+allOne.inc("b")  # b2 a1 c1
+print(allOne.getMaxKey())  # "b"
+print(allOne.getMinKey() in "ac")  # "a / c"
+allOne.inc("a")  # b2 a2 c1
+print(allOne.getMaxKey() in "ab")  # "a / b"
+allOne.inc("c")  # b2 a2 c2
+print(allOne.getMaxKey() in "abc")  # "a / b / c"
+allOne.inc("c")  # c3 b2 a2
+print(allOne.getMaxKey())  # "c"
+print(allOne.getMinKey() in "ab")  # "a / b"
+allOne.inc("b")  # c3 b3 a2
+print(allOne.getMaxKey() in "bc")  # "b / c"
+allOne.dec("c")  # b3 c2 a2
+print(allOne.getMaxKey())  # "b"
+allOne.dec("c")  # b2 a2 c1
+print(allOne.getMaxKey() in "ab")  # "a / b"
+print(allOne.getMinKey())  # "c"
+allOne.dec("a")  # b2 a1 c1
+print(allOne.getMinKey() in "ac")  # "a / c"
+allOne.dec("a")  # b2 c1
+print(allOne.getMinKey())  # "c"
+allOne.dec("c")  # b2 c1
+print(allOne.getMaxKey())  # "b"
+print(allOne.getMinKey())  # "b"
 
 # a2 = AllOne()
 # a2.inc("hello")  # hello1
@@ -156,21 +196,21 @@ print(a3.getMaxKey())  # "leet"
 a3.inc("ds")  # leet2 ds2 hello1 world1 code1
 a3.dec("leet")  # ds2 leet1 hello1 world1 code1
 print(a3.getMaxKey())  # "ds"
-a3.dec("ds")
-a3.inc("hello")
+a3.dec("ds")  # ds1 leet1 hello1 world1 code1
+a3.inc("hello")  # hello2 ds1 leet1 world1 code1
 print(a3.getMaxKey())  # "hello"
-a3.inc("hello")
-a3.inc("hello")
-a3.dec("world")
-a3.dec("leet")
-a3.dec("code")
-a3.dec("ds")
+a3.inc("hello")  # hello3 ds1 leet1 world1 code1
+a3.inc("hello")  # hello4 ds1 leet1 world1 code1
+a3.dec("world")  # hello4 ds1 leet1 code1
+a3.dec("leet")  # hello4 ds1 code1
+a3.dec("code")  # hello4 ds1
+a3.dec("ds")  # hello4
 print(a3.getMaxKey())  # "hello"
-a3.inc("new")
-a3.inc("new")
-a3.inc("new")
-a3.inc("new")
-a3.inc("new")
-a3.inc("new")
+a3.inc("new")  # hello4 new1
+a3.inc("new")  # hello4 new2
+a3.inc("new")  # hello4 new3
+a3.inc("new")  # hello4 new4
+a3.inc("new")  # new5 hello4
+a3.inc("new")  # new6 hello4
 print(a3.getMaxKey())  # "new"
 print(a3.getMinKey())  # "hello"
