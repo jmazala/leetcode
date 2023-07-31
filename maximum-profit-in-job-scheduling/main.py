@@ -189,10 +189,10 @@ class Solution:
     # Brute force is O(n^2) assuming we look through every chain.  We can use a heap to do better
     # 1 - for each job, find all possible chains to extend it to
     # 2 - Since all jobs are sorted according to start time, if a chain doesn't conflict with the current job, it won't conflict with future jobs
-    # Observation 1 says store existing chains so thoe ending earliest can be accessed quickly (find existing probable chains the fastest)
+    # Observation 1 says store existing chains so those ending earliest can be accessed quickly (find existing probable chains the fastest)
     # Observation 2 says we dont need to remember chains that have ended, just the maximum profit from any chain that has ended
     # ALGORITHM
-    # iterate jobs left to right (after soritng), and check previous chains by popping them out of a heap
+    # iterate jobs left to right (after sorting), and check previous chains by popping them out of a heap
     # If we can extend, extend and push into heap.  The heap contains endTime and profit
     # Caveat:  We can't just immediately push back into the heap because we might immediately pop it again
 
@@ -213,8 +213,12 @@ class Solution:
 
         for [start, end, profit] in jobs:
             # keep popping while heap isn't empty and jobs don't conflict
+            # i.e. pop off the heap all jobs that have ended
+            # # (because we're processing ith job's start time)
             while len(maxHeap) > 0 and start >= maxHeap.peek()[0]:
                 item = maxHeap.pop()
+                # If we're in this while loop, this job has ended
+                # maxProfit remembers the most profitable job that has already ended
                 maxProfit = max(maxProfit, item[1])
 
             heapItem = (end, profit + maxProfit)
