@@ -71,10 +71,13 @@ class Solution:
             cR = s[right]
 
             if cR in hash:
-                left = max(hash[cR], left)
+                # We need the max operator here, because left
+                # may have already skipped past the previous index of
+                # this repeated char
+                left = max(hash[cR] + 1, left)
 
             answer = max(answer, right - left + 1)
-            hash[cR] = right + 1
+            hash[cR] = right
             right += 1
 
         return answer
