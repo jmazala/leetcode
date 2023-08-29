@@ -16,7 +16,7 @@ class Solution:
 
         while right < len(s):
             cR = s[right]
-            # # modify current state
+            # modify current state
             counts[cR] += 1
 
             # # try to shrink the window

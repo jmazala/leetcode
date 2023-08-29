@@ -21,7 +21,6 @@ class Solution:
         # EX: Matching AABC matches 3 unique characters 'A','B','C'
         # this is faster because comparing an int is better than comparing 2 dictionaries
         charMatchesRequired = len(tCharCounts)
-        charsMatched = 0
 
         # SLIDING WINDOW
         left = 0
@@ -35,24 +34,24 @@ class Solution:
                 sCharCounts[c] += 1
 
                 if sCharCounts[c] == tCharCounts[c]:
-                    charsMatched += 1
+                    charMatchesRequired -= 1
 
             # when our sliding window has a match,
             # check criteria (in this case, its shortest length)
             # # and then shrink window until we undo the match
-            while left <= right and charsMatched == charMatchesRequired:
-                cL = s[left]
-
-                # check criteria (shortest substring?)
+            while left <= right and charMatchesRequired == 0:
+                # check criteria (shortest substring)
                 if (right - left) < (answer[1] - answer[0]):
-                    answer = [left, right, True]
+                    answer = [left, right]
 
                 # try to undo the match
+                cL = s[left]
+
                 if cL in sCharCounts:
                     sCharCounts[cL] -= 1
 
                     if sCharCounts[cL] < tCharCounts[cL]:
-                        charsMatched -= 1  # match is undone
+                        charMatchesRequired += 1  # match is undone
 
                 left += 1
 

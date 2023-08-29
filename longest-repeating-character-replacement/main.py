@@ -4,6 +4,12 @@ import collections
 
 class Solution:
     # Sliding window.  Find max sliding window where there are at most 3 distinct chars
+    # ALGORITHM
+    # Expand sliding window, keeping track of char counts within that window
+    # and also keeping track of the max of char counts in the window
+    # windowSize - maxCount = # of replacements
+    # if # of replacements is <= k, keep going
+    # otherwise, shrink the window by 1 (so you never grow too big)
     def characterReplacement(self, s: str, k: int) -> int:
         charHash = collections.defaultdict(int)
         maxFrequency = 0
@@ -33,5 +39,5 @@ class Solution:
 
 
 s = Solution()
-print(s.characterReplacement("ABAB", 2))  # 4
+# print(s.characterReplacement("ABAB", 2))  # 4
 print(s.characterReplacement("AABABBA", 1))  # 4

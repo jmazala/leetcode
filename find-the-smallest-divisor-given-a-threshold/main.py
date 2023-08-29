@@ -6,6 +6,9 @@ from typing import List
 
 class Solution:
     def smallestDivisor(self, nums: List[int], threshold: int) -> int:
+        if len(nums) > threshold:
+            return -1
+
         low = 1
         high = max(nums)
 
