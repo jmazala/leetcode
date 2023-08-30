@@ -14,6 +14,7 @@ class Solution:
     #   through the root
     #   the right subtree
     # METHOD 1 - POST ORDER DFS (LEFT, RIGHT, NODE)
+    #
     def maxPathSum(self, root: TreeNode) -> int:
         self.answer = float("-inf")
         self.helper(root)
