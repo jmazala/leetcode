@@ -1,21 +1,24 @@
 # https://leetcode.com/problems/alien-dictionary/
 
+from collections import defaultdict
 from typing import List
 
 
 class Solution:
+    # METHOD 1 - TOPOLOGICAL SORT
+    # Have char counts and adjacencies maps
+    # Iterate through each pair of words, and find the first non-matching char
+    # When you find a mismatching char, you've found an adjacency
+    # Since the words are already sorted in lexographical order, c2 must come after c1 (dependency)
     def alienOrder(self, words: List[str]) -> str:
         # build a graph / adjacency list for each character
-        counts = {}
-        adjacencies = {}
+        counts = defaultdict(int)
+        adjacencies = defaultdict(list)
 
         # first start with the entire character set amongst all words
         for word in words:
             for c in word:
-                if c not in counts:
-                    counts[c] = 0
-                if c not in adjacencies:
-                    adjacencies[c] = []
+                counts[c]
 
         # go through each pair of words and find the first char mismatch
         for i in range(0, len(words) - 1):
@@ -54,7 +57,7 @@ class Solution:
 
 
 s = Solution()
-print(s.alienOrder(["ab", "adc"]))
+print(s.alienOrder(["ab", "adc"]))  # abcd
 print(s.alienOrder(["wrt", "wrf", "er", "ettt", "rftt"]))  # "wertf"
 print(s.alienOrder(["wrt", "wrf", "wrz", "er", "ettt", "rftt"]))  # "wertfz"
 print(s.alienOrder(["wrt", "wrf", "wrz", "wtz", "er", "ettt", "rftt"]))  # "wertfz"

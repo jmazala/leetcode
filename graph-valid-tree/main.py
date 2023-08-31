@@ -63,6 +63,41 @@ class Solution:
         for neighbor in neighbors[node]:
             self.dfs(neighbor, neighbors, visited)
 
+    # METHOD 2 - Iterative DFS, with some extra conditions
+    # Starting at node 0, dfs the tree
+    # Iterate through the neighbors
+    #   For each neighbor
+    #     if we've seen it already (marked its parent), there is a cycle
+    #     If the neighbor is the parent, don't visit it (since undirected graph)
+    #       Then, mark the neighbor's parent as the current node
+    #       and push onto stack to visit it (Iterative DFS)
+    # 111ms / 17.9MB
+    def validTree(self, n: int, edges: List[List[int]]) -> bool:
+        neighbors = defaultdict(list)
+
+        for node1, node2 in edges:
+            neighbors[node1].append(node2)
+            neighbors[node2].append(node1)
+
+        parents = {0: -1}  # Since undirected, there is no "starting point".  Just use 0
+        stack = [0]
+
+        while stack:
+            node = stack.pop()
+            for neighbor in neighbors[node]:
+                # NEVER GO BACKWARDS!  THIS IS KEY
+                if neighbor == parents[node]:
+                    continue
+
+                # CYCLE IS FOUND
+                if neighbor in parents:
+                    return False
+
+                parents[neighbor] = node
+                stack.append(neighbor)
+
+        return len(parents) == n
+
 
 s = Solution()
 print(s.validTree(n=5, edges=[[0, 1], [0, 2], [0, 3], [1, 4]]))  # True
