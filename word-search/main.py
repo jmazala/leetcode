@@ -1,28 +1,64 @@
+from typing import List
+
+
 class Solution:
-  def exist(self, board: List[List[str]], word: str) -> bool:
-    def dfs(i, j, index, seen=[]):
-      if (i == -1 or j == -1 or i >= len(board) or j >= len(board[0]) or board[i][j] != word[index]):
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        self.m = len(board)
+        self.n = len(board[0])
+        self.board = board
+        self.word = word
+
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if self.dfs(i, j, 0, set()):
+                    return True
+
         return False
-      
-      index += 1
-      
-      if (index == len(word)):
-        return True
-      
-      #for nextI, nextJ in up, down, left, right
-      for nextI, nextJ in [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]:
-        if (nextI, nextJ) not in seen:
-          nextSeen = seen.copy()
-          nextSeen.append((nextI, nextJ))
-          next = dfs(nextI, nextJ, index, nextSeen)
-          if next:
+
+    def dfs(self, i, j, index, seen):
+        if index == len(self.word):
             return True
-      
-      return False
-    
-    for i in range(len(board)):
-      for j in range(len(board[0])):
-        if dfs(i,j, 0, [(i,j)]):
-          return True
-    
-    return False
+
+        # Check for OOB or not a match or been here before
+        if (
+            i == -1
+            or j == -1
+            or i >= self.m
+            or j >= self.n
+            or (i, j) in seen
+            or self.board[i][j] != self.word[index]
+        ):
+            return False
+
+        seen.add((i, j))
+
+        # for nextI, nextJ in up, down, left, right
+        for nextI, nextJ in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]:
+            if self.dfs(nextI, nextJ, index + 1, seen):
+                return True
+
+        seen.remove((i, j))
+        return False
+
+
+s = Solution()
+print(
+    s.exist(
+        board=[["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]],
+        word="ABCCED",
+    )
+)  # True
+
+print(
+    s.exist(
+        board=[["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]],
+        word="SEE",
+    )
+)  # True
+
+print(
+    s.exist(
+        board=[["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]],
+        word="ABCB",
+    )
+)  # False
