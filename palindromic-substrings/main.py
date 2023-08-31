@@ -40,7 +40,7 @@ class Solution:
 
     # METHOD 2 - Expand at each index
     # 99ms / 16.4MB
-    def countSubstrings(self, s: str) -> str:
+    def countSubstrings(self, s: str) -> int:
         if len(s) < 2:
             return 1
 
