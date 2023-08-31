@@ -12,17 +12,18 @@ class Solution:
     # METHOD 1
     #   1 - Count components of the graph using DFS
     #   2 - Use undirected graph cycle algorithm (DFS)
-    # 103ms / 19.8MB
+    # 98ms / 19.8MB
     def validTree(self, n: int, edges: List[List[int]]) -> bool:
-        if self.countComponents(n, edges) != 1:
-            return False
-
-        visited = [False] * n
         neighbors = defaultdict(list)
 
         for node1, node2 in edges:
             neighbors[node1].append(node2)
             neighbors[node2].append(node1)
+
+        if not self.isGraphConnected(n, neighbors):
+            return False
+
+        visited = [False] * n
 
         for i in range(n):
             if visited[i]:
@@ -48,28 +49,19 @@ class Solution:
 
         return False
 
-    def countComponents(self, n: int, edges: List[List[int]]) -> int:
-        self.visited = [False] * n
-        self.neighbors = defaultdict(list)
-        components = 0
+    def isGraphConnected(self, n: int, neighbors) -> int:
+        visited = [False] * n
+        self.dfs(0, neighbors, visited)
+        return False not in visited
 
-        for [node1, node2] in edges:
-            self.neighbors[node1].append(node2)
-            self.neighbors[node2].append(node1)
+    def dfs(self, node, neighbors, visited):
+        if visited[node]:
+            return
 
-        for i in range(n):
-            if not self.visited[i]:
-                components += 1
-                self.dfs(i, i, edges)
+        visited[node] = True
 
-        return components
-
-    def dfs(self, baseNode, curNode, edges):
-        self.visited[curNode] = True
-
-        for neighbor in self.neighbors[curNode]:
-            if not self.visited[neighbor]:
-                self.dfs(baseNode, neighbor, edges)
+        for neighbor in neighbors[node]:
+            self.dfs(neighbor, neighbors, visited)
 
 
 s = Solution()
