@@ -70,51 +70,53 @@ class Solution:
         if len(s2) < len(s1):
             return False
 
-        if len(s2) == len(s1):
-            return "".join(sorted(s1)) == "".join(sorted(s2))
-
         s1Map = collections.defaultdict(int)
         s2Map = collections.defaultdict(int)
 
         for i in range(len(s1)):
-            s1Map[s1[i]] += 1
-            s2Map[s2[i]] += 1
+            c1 = s1[i]
+            s1Map[c1] += 1
+
+        for i in range(len(s1)):
+            c2 = s2[i]
+            if c2 in s1Map:
+                s2Map[c2] += 1
 
         matchesRequired = len(s1Map)
-        matchesFound = 0
+        for char, count in s1Map.items():
+            if s2Map[char] == count:
+                matchesRequired -= 1
 
-        for c in s1Map:
-            if s1Map[c] == s2Map[c]:
-                matchesFound += 1
-
-        for i in range(len(s2) - len(s1)):
-            if matchesFound == matchesRequired:
+        windowSize = len(s1)
+        for left in range(len(s2) - len(s1)):
+            if matchesRequired == 0:
                 return True
 
-            # add / subtract chars at beginning / end of a substring of s2 with length s1
-            charToRemove = s2[i]
-            charToAdd = s2[i + len(s1)]
+            right = left + windowSize
+            toRemove = s2[left]
+            toAdd = s2[right]
 
-            if charToAdd in s1Map:
-                s2Map[charToAdd] += 1
+            if toAdd in s2Map:
+                s2Map[toAdd] += 1
 
-                # got a match
-                if s2Map[charToAdd] == s1Map[charToAdd]:
-                    matchesFound += 1
-                # lost a match
-                elif s2Map[charToAdd] == s1Map[charToAdd] + 1:
-                    matchesFound -= 1
+                # Gained a match
+                if s2Map[toAdd] == s1Map[toAdd]:
+                    matchesRequired -= 1
+                # Lost a match
+                elif s2Map[toAdd] == s1Map[toAdd] + 1:
+                    matchesRequired += 1
 
-            if charToRemove in s1Map:
-                s2Map[charToRemove] -= 1
-                # got a match
-                if s2Map[charToRemove] == s1Map[charToRemove]:
-                    matchesFound += 1
-                # lost a match
-                elif s2Map[charToRemove] == s1Map[charToRemove] - 1:
-                    matchesFound -= 1
+            if toRemove in s2Map:
+                s2Map[toRemove] -= 1
 
-        return matchesFound == matchesRequired
+                # Gained a match
+                if s2Map[toRemove] == s1Map[toRemove]:
+                    matchesRequired -= 1
+                # Lost a match
+                elif s2Map[toRemove] == s1Map[toRemove] - 1:
+                    matchesRequired += 1
+
+        return matchesRequired == 0
 
 
 s = Solution()
