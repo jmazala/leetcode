@@ -50,7 +50,7 @@ class Solution:
         self.prevVal = float("-inf")
         return self.helper(root)
 
-    def helper(self, root, prevVal):
+    def helper(self, root):
         if root is None:
             return True
 
