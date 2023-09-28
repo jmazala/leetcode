@@ -1,12 +1,13 @@
 # https://leetcode.com/problems/soup-servings/description/
 
 from functools import cache
+from math import ceil
 
 A_FIRST = 0
 EQUAL = 1
 B_FIRST = 2
 
-OPTIONS = [(100, 0), (75, 25), (50, 50), (25, 75)]
+OPTIONS = [(4, 0), (3, 1), (2, 2), (1, 3)]
 MAX = 4800
 
 
@@ -15,12 +16,11 @@ class Solution:
         if n >= MAX:
             return 1
 
-        result = self.helper(n, n)
+        result = self.helper(ceil(n / 25), ceil(n / 25))
         return result[A_FIRST] + 0.5 * result[EQUAL]
 
     @cache
     def helper(self, a, b) -> dict[int, float]:
-        print(f"helper({a}, {b})")
         hash = {A_FIRST: 0.0, B_FIRST: 0.0, EQUAL: 0.0}
 
         for aSub, bSub in OPTIONS:
@@ -45,4 +45,4 @@ class Solution:
 s = Solution()
 print(s.soupServings(50))  # .62500
 print(s.soupServings(100))  # .71875
-print(s.soupServings(800))
+print(s.soupServings(800))  # 0.961617625085637
